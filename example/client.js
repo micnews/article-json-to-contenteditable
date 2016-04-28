@@ -15,6 +15,17 @@ const items = [{
     'mark': false,
     'markClass': null
   }]
+}, {
+  type: 'embed',
+  embedType: 'facebook',
+  url: 'https://www.facebook.com/david.bjorklund/posts/10153809692501070',
+  embedAs: 'post',
+  date: 'Thursday, January 21, 2016',
+  user: 'David Pop Hipsterson',
+  text: [{
+    content: 'Hey!So, for the last few weeks I\'ve worked on http://mic.com/ - the new home for mic.com (on desktop) - please take a look :)',
+    href: null
+  }]
 }];
 
 const app = tree(getComponent({items, onInput, container}));
