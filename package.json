@@ -42,7 +42,7 @@
     "testron": "^1.2.0"
   },
   "dependencies": {
-    "article-json-html-render": "^2.0.0",
+    "article-json-html-render": "^2.1.0",
     "embeds": "^2.0.1",
     "html-to-article-json": "^1.12.4",
     "magic-virtual-element": "^1.0.6",
