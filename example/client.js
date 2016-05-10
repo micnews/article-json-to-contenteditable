@@ -1,5 +1,6 @@
 import {render, tree} from 'deku';
-import {getComponent} from '../lib/index';
+import Article from '../lib';
+import element from 'magic-virtual-element';
 
 const container = document.querySelector('#editor');
 
@@ -27,9 +28,11 @@ const items = [{
   }]
 }];
 
-const app = tree(getComponent({items, onInput}));
-render(app, container);
+const onInput = ({items}) => {
+  console.log('in client.js onInput');
+  app.mount(<Article items={items} onInput={onInput} />);
+};
 
-function onInput ({items}) {
-  console.log('updated', items);
-}
+const app = tree(<Article items={items} onInput={onInput} />);
+
+render(app, container);
