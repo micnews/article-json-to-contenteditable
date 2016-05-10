@@ -12,7 +12,7 @@ const fixtures = {
 const test = process.browser ? _test : function () {};
 
 test('FacebookEmbed - body', t => {
-  const actual = renderString(tree(<FacebookEmbed embedAs="post" />));
+  const actual = renderString(tree(<FacebookEmbed embedAs='post' />));
   const expected = renderString(tree(
     <iframe type='facebook' frameBorder='0' width='100%' src='javascript:false'></iframe>));
   t.equal(actual, expected);

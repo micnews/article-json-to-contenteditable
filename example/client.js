@@ -1,6 +1,5 @@
 import {render, tree} from 'deku';
-import element from 'magic-virtual-element';
-import {Component, setupUpdate, getComponent} from '../lib/index';
+import {setupUpdate, getComponent} from '../lib/index';
 
 const container = document.querySelector('#editor');
 
