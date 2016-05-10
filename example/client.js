@@ -1,5 +1,5 @@
 import {render, tree} from 'deku';
-import {setupUpdate, getComponent} from '../lib/index';
+import {getComponent} from '../lib/index';
 
 const container = document.querySelector('#editor');
 
@@ -27,10 +27,9 @@ const items = [{
   }]
 }];
 
-const app = tree(getComponent({items, onInput, container}));
+const app = tree(getComponent({items, onInput}));
 render(app, container);
 
-const update = setupUpdate({container, onInput});
 function onInput ({items}) {
-  update({items});
+  console.log('updated', items);
 }
