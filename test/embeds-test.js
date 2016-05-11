@@ -1,6 +1,7 @@
 import _test from 'tape-catch';
 import FacebookEmbed from '../lib/embeds/facebook';
 import InstagramEmbed from '../lib/embeds/instagram';
+import TwitterEmbed from '../lib/embeds/twitter';
 import loadEmbed from '../lib/embeds/load-embed';
 import {render, renderString, tree} from 'deku';
 import element from 'magic-virtual-element';
@@ -10,7 +11,9 @@ const fixtures = {
   facebookPost:
     fs.readFileSync(`${__dirname}/fixtures/facebook-post.html`, 'utf8').trim(),
   instagramPost:
-    fs.readFileSync(`${__dirname}/fixtures/instagram-post.html`, 'utf8').trim()
+    fs.readFileSync(`${__dirname}/fixtures/instagram-post.html`, 'utf8').trim(),
+  twitterPost:
+    fs.readFileSync(`${__dirname}/fixtures/twitter-post.html`, 'utf8').trim()
 };
 
 const test = process.browser ? _test : function () {};
@@ -114,6 +117,67 @@ test('InstagramEmbed - onResize', t => {
     t.end();
   };
   render(tree(<InstagramEmbed {...opts} onResize={onResize} />), el);
+});
+
+test('TwitterEmbed - body', t => {
+  const actual = renderString(tree(<TwitterEmbed />));
+  const expected = renderString(tree(
+    <iframe type='twitter' frameBorder='0' width='100%' src='javascript:false'></iframe>));
+  t.equal(actual, expected);
+  t.end();
+});
+
+test('TwitterEmbed - onLoaded', t => {
+  const opts = {
+    'caption': [],
+    'url': 'https://twitter.com/nvidia/status/699645794903666688',
+    'date': '',
+    'user': {
+      'name': null,
+      'slug': null
+    },
+    'id': '699645794903666688',
+    'text': [{
+      'content': 'Explore the power of mobility, flexibility, and collaboration at #GTC16. Learn more: http://nvda.ly/Y65h9 pic.twitter.com/cZ34wHVJaP',
+      'href': null
+    }]
+  };
+
+  const el = document.body.appendChild(document.createElement('div'));
+  const expectedPost = fixtures.twitterPost;
+  const onLoaded = () => {
+    const iframeBody = el.querySelector('iframe').contentWindow.document.body;
+    const actualPost = iframeBody.innerHTML;
+
+    t.equal(actualPost, expectedPost);
+    t.end();
+  };
+  render(tree(<TwitterEmbed {...opts} onLoaded={onLoaded} />), el);
+});
+
+test('TwitterEmbed - onResize', t => {
+  const opts = {
+    'caption': [],
+    'url': 'https://twitter.com/nvidia/status/699645794903666688',
+    'date': '',
+    'user': {
+      'name': null,
+      'slug': null
+    },
+    'id': '699645794903666688',
+    'text': [{
+      'content': 'Explore the power of mobility, flexibility, and collaboration at #GTC16. Learn more: http://nvda.ly/Y65h9 pic.twitter.com/cZ34wHVJaP',
+      'href': null
+    }]
+  };
+
+  const el = document.body.appendChild(document.createElement('div'));
+  const expectedHeight = 445;
+  const onResize = ({height}) => {
+    t.equal(height, expectedHeight);
+    t.end();
+  };
+  render(tree(<TwitterEmbed {...opts} onResize={onResize} />), el);
 });
 
 test('loadEmbed()', t => {
