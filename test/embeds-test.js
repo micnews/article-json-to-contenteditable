@@ -42,7 +42,7 @@ test('FacebookEmbed - onLoaded', t => {
   render(tree(<FacebookEmbed {...opts} onLoaded={onLoaded} />), el);
 });
 
-test.todo('FacebookEmbed onResize', t => {
+test('FacebookEmbed onResize', t => {
   const opts = {
     url: 'https://www.facebook.com/david.bjorklund/posts/10153809692501070',
     embedAs: 'post',
@@ -55,14 +55,10 @@ test.todo('FacebookEmbed onResize', t => {
   };
 
   const el = document.body.appendChild(document.createElement('div'));
-  const expectedHeight = 123;
-  const onResize = ({actualHeight}) => {
-    t.equal(actualHeight, expectedHeight);
+  const expectedHeight = 150;
+  const onResize = ({height}) => {
+    t.equal(height, expectedHeight);
     t.end();
   };
   render(tree(<FacebookEmbed {...opts} onResize={onResize} />), el);
-
-  setInterval(() => {
-    console.log('#', JSON.stringify(el.querySelector('iframe').contentWindow.document.body.innerHTML));
-  }, 1000);
 });
