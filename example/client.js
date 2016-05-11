@@ -26,6 +26,15 @@ const items = [{
     content: 'Hey!So, for the last few weeks I\'ve worked on http://mic.com/ - the new home for mic.com (on desktop) - please take a look :)',
     href: null
   }]
+}, {
+  'type': 'embed',
+  'embedType': 'instagram',
+  'caption': [],
+  'date': {},
+  'user': {},
+  'id': 'tsxp1hhQTG',
+  'text': '',
+  'url': 'https://instagram.com/p/tsxp1hhQTG'
 }];
 
 const onInput = ({items}) => {
