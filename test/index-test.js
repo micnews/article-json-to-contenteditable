@@ -19,6 +19,49 @@ function keydown (opts) {
 }
 
 if (process.browser) {
+  test('<ArticleJsonToContenteditable /> items', t => {
+    const items = [
+      {
+        'type': 'paragraph',
+        'children': [{
+          'type': 'text',
+          'content': 'Text text text',
+          'href': null,
+          'italic': false,
+          'bold': false,
+          'mark': false,
+          'markClass': null
+        }]
+      },
+      {
+        'type': 'embed',
+        'embedType': 'instagram',
+        'caption': [],
+        'date': {},
+        'user': {},
+        'id': 'tsxp1hhQTG',
+        'text': '',
+        'url': 'https://instagram.com/p/tsxp1hhQTG'
+      }
+    ];
+
+    const expected = renderString(tree(<div contenteditable='true'>
+      <article>
+        <p>Text text text</p>
+        <figure contenteditable='false'>
+          <iframe type='instagram' frameborder='0' width='100%' src='javascript:false'></iframe>
+        </figure>
+      </article>
+    </div>));
+    const app = tree(<ArticleJsonToContenteditable items={items} />);
+    const container = document.createElement('div');
+    render(app, container);
+    const actual = container.innerHTML;
+
+    t.equal(actual, expected);
+    t.end();
+  });
+
   test('<ArticleJsonToContenteditable onInput', t => {
     const container = document.createElement('div');
     let onUpdateCalled = false;
