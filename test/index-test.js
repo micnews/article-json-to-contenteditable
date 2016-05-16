@@ -62,7 +62,7 @@ if (process.browser) {
     t.end();
   });
 
-  test('<ArticleJsonToContenteditable onInput', t => {
+  test('<ArticleJsonToContenteditable onInput enter key', t => {
     const container = document.createElement('div');
     let onUpdateCalled = false;
 
@@ -77,6 +77,72 @@ if (process.browser) {
       t.notOk(onUpdateCalled, 'onUpdate was not called');
 
       container.querySelector('article').dispatchEvent(keydown({ key: 'enter' }));
+      process.nextTick(() => {
+        t.ok(onUpdateCalled, 'onUpdate was called');
+        t.end();
+      });
+    });
+  });
+
+  test('<ArticleJsonToContenteditable onInput backspace', t => {
+    const container = document.createElement('div');
+    let onUpdateCalled = false;
+
+    function onInput ({articleJson}) {
+      onUpdateCalled = true;
+    }
+
+    const app = tree(<ArticleJsonToContenteditable items={[]} onInput={onInput}/>);
+    render(app, container);
+    container.querySelector('article').dispatchEvent(keydown({ key: 'a' }));
+    process.nextTick(() => {
+      t.notOk(onUpdateCalled, 'onUpdate was not called');
+
+      container.querySelector('article').dispatchEvent(keydown({ key: 'backspace' }));
+      process.nextTick(() => {
+        t.ok(onUpdateCalled, 'onUpdate was called');
+        t.end();
+      });
+    });
+  });
+
+  test('<ArticleJsonToContenteditable onInput bold command', t => {
+    const container = document.createElement('div');
+    let onUpdateCalled = false;
+
+    function onInput ({articleJson}) {
+      onUpdateCalled = true;
+    }
+
+    const app = tree(<ArticleJsonToContenteditable items={[]} onInput={onInput}/>);
+    render(app, container);
+    container.querySelector('article').dispatchEvent(keydown({ key: 'a' }));
+    process.nextTick(() => {
+      t.notOk(onUpdateCalled, 'onUpdate was not called');
+
+      container.querySelector('article').dispatchEvent(keydown({ meta: true, key: 'b' }));
+      process.nextTick(() => {
+        t.ok(onUpdateCalled, 'onUpdate was called');
+        t.end();
+      });
+    });
+  });
+
+  test('<ArticleJsonToContenteditable onInput itaic command', t => {
+    const container = document.createElement('div');
+    let onUpdateCalled = false;
+
+    function onInput ({articleJson}) {
+      onUpdateCalled = true;
+    }
+
+    const app = tree(<ArticleJsonToContenteditable items={[]} onInput={onInput}/>);
+    render(app, container);
+    container.querySelector('article').dispatchEvent(keydown({ key: 'a' }));
+    process.nextTick(() => {
+      t.notOk(onUpdateCalled, 'onUpdate was not called');
+
+      container.querySelector('article').dispatchEvent(keydown({ meta: true, key: 'i' }));
       process.nextTick(() => {
         t.ok(onUpdateCalled, 'onUpdate was called');
         t.end();

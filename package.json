@@ -46,6 +46,7 @@
     "deku": "^1.0.0",
     "embeds": "^2.0.1",
     "html-to-article-json": "^1.12.4",
+    "keycode": "^2.1.1",
     "magic-virtual-element": "^1.0.6",
     "morphdom": "^1.3.0",
     "save-selection": "^1.0.0"
