@@ -158,21 +158,21 @@ test('TwitterEmbed - onLoaded', t => {
 test('TwitterEmbed - onResize', t => {
   const opts = {
     'caption': [],
-    'url': 'https://twitter.com/nvidia/status/699645794903666688',
+    'url': 'https://twitter.com/ceejbot/status/712997641299210240',
     'date': '',
     'user': {
       'name': null,
       'slug': null
     },
-    'id': '699645794903666688',
+    'id': '712997641299210240',
     'text': [{
-      'content': 'Explore the power of mobility, flexibility, and collaboration at #GTC16. Learn more: http://nvda.ly/Y65h9 pic.twitter.com/cZ34wHVJaP',
+      'content': 'tl;dr life is short; don’t reinvent stuff if you don’t have to; get on with YOUR interesting problem',
       'href': null
     }]
   };
 
   const el = document.body.appendChild(document.createElement('div'));
-  const expectedHeight = 445;
+  const expectedHeight = 315;
   const onResize = ({height}) => {
     t.equal(height, expectedHeight);
     t.end();
