@@ -33,7 +33,6 @@
     "brfs": "^1.4.3",
     "browserify": "^13.0.0",
     "create-event": "^1.0.9",
-    "deku": "^1.0.0",
     "electron-prebuilt": "^0.37.7",
     "faucet": "0.0.1",
     "semistandard-deku": "github:micnews/semistandard#deku",
@@ -44,6 +43,7 @@
   },
   "dependencies": {
     "article-json-html-render": "^2.1.0",
+    "deku": "^1.0.0",
     "embeds": "^2.0.1",
     "html-to-article-json": "^1.12.4",
     "magic-virtual-element": "^1.0.6",
