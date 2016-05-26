@@ -149,4 +149,32 @@ if (process.browser) {
       });
     });
   });
+
+  test('<ArticleJsonToContenteditable onBlur', t => {
+    const container = document.createElement('div');
+    const expected = [
+      {
+        type: 'paragraph',
+        children: [
+          {
+            type: 'linebreak'
+          }
+        ]
+      }
+    ];
+    let onBlurCalled = false;
+    let actual;
+
+    function onBlur ({items}) {
+      actual = items;
+      onBlurCalled = true;
+    }
+
+    const app = tree(<ArticleJsonToContenteditable items={[]} onBlur={onBlur}/>);
+    render(app, container);
+    container.querySelector('article').parentNode.dispatchEvent(new window.Event('blur'));
+    t.ok(onBlurCalled, 'onBlur was called');
+    t.deepEqual(actual, expected);
+    t.end();
+  });
 }
