@@ -19,9 +19,9 @@ const fixtures = {
 const test = process.browser ? _test : function () {};
 
 test('FacebookEmbed - body', t => {
-  const actual = renderString(tree(<FacebookEmbed embedAs='post' />));
+  const actual = renderString(tree(<FacebookEmbed embedAs='post' id='123' />));
   const expected = renderString(tree(
-    <iframe type='facebook' frameBorder='0' width='100%' src='javascript:false'></iframe>));
+    <iframe id='facebook-123' type='facebook' frameBorder='0' width='100%' src='javascript:false'></iframe>));
   t.equal(actual, expected);
   t.end();
 });
@@ -71,9 +71,9 @@ test('FacebookEmbed onResize', t => {
 });
 
 test('InstagramEmbed - body', t => {
-  const actual = renderString(tree(<InstagramEmbed />));
+  const actual = renderString(tree(<InstagramEmbed id='123' />));
   const expected = renderString(tree(
-    <iframe type='instagram' frameBorder='0' width='100%' src='javascript:false'></iframe>));
+    <iframe id='instagram-123' type='instagram' frameBorder='0' width='100%' src='javascript:false'></iframe>));
   t.equal(actual, expected);
   t.end();
 });
@@ -120,9 +120,9 @@ test('InstagramEmbed - onResize', t => {
 });
 
 test('TwitterEmbed - body', t => {
-  const actual = renderString(tree(<TwitterEmbed />));
+  const actual = renderString(tree(<TwitterEmbed id='123' />));
   const expected = renderString(tree(
-    <iframe type='twitter' frameBorder='0' width='100%' src='javascript:false'></iframe>));
+    <iframe id='twitter-123' type='twitter' frameBorder='0' width='100%' src='javascript:false'></iframe>));
   t.equal(actual, expected);
   t.end();
 });
