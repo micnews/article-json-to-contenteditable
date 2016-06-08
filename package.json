@@ -46,7 +46,7 @@
     "deku": "^1.0.0",
     "embeds": "^2.0.1",
     "html-to-article-json": "^1.12.4",
-    "is-image-url": "^1.1.8",
+    "is-image": "^1.0.1",
     "is-url": "^1.2.1",
     "keycode": "^2.1.1",
     "magic-virtual-element": "^1.0.6",
