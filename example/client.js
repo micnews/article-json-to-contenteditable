@@ -80,10 +80,10 @@ const items = [{
 }];
 
 const onInput = ({items}) => {
-  console.log('in client.js onInput');
-  app.mount(<Article items={items} onInput={onInput} />);
+  console.log('in client.js onInput or onBlur');
+  app.mount(<Article items={items} onInput={onInput} onBlur={onInput}/>);
 };
 
-const app = tree(<Article items={items} onInput={onInput} />);
+const app = tree(<Article items={items} onInput={onInput} onBlur={onInput}/>);
 
 render(app, container);
