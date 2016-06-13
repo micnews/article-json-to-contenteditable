@@ -79,11 +79,11 @@ const items = [{
   }]
 }];
 
-const onInput = ({items}) => {
-  console.log('in client.js onInput or onBlur');
-  app.mount(<Article items={items} onInput={onInput} onBlur={onInput}/>);
+const onChange = ({items}) => {
+  console.log('in client.js onChange');
+  app.mount(<Article items={items} onInput={onChange} onBlur={onChange}/>);
 };
 
-const app = tree(<Article items={items} onInput={onInput} onBlur={onInput}/>);
+const app = tree(<Article items={items} onInput={onChange} onBlur={onChange}/>);
 
 render(app, container);

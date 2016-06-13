@@ -49,7 +49,7 @@ if (process.browser) {
       <article>
         <p>Text text text</p>
         <figure contenteditable='false'>
-          <iframe type='instagram' frameborder='0' width='100%' src='javascript:false'></iframe>
+          <iframe id='instagram-tsxp1hhQTG' type='instagram' frameborder='0' width='100%' src='javascript:false'></iframe>
         </figure>
       </article>
     </div>));
