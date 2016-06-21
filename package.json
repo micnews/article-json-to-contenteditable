@@ -33,10 +33,10 @@
     "brfs": "^1.4.3",
     "browserify": "^13.0.0",
     "create-event": "^1.0.9",
-    "electron-prebuilt": "^0.37.7",
+    "electron-prebuilt": "^1.2.3",
     "faucet": "0.0.1",
     "semistandard-deku": "github:micnews/semistandard#deku",
-    "snazzy": "^3.0.0",
+    "snazzy": "^4.0.0",
     "tape": "^4.5.1",
     "tape-catch": "^1.0.5",
     "testron": "^1.2.0"
