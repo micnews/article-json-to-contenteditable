@@ -18,6 +18,10 @@ function keydown (opts) {
   return createEvent('keydown', opts);
 }
 
+function mouseup () {
+  return new window.MouseEvent('mouseup');
+}
+
 if (process.browser) {
   test('<ArticleJsonToContenteditable /> items', t => {
     const items = [
@@ -66,8 +70,10 @@ if (process.browser) {
     const container = document.createElement('div');
     let onUpdateCalled = false;
 
-    function onUpdate ({articleJson}) {
+    function onUpdate ({items, selectionBoundingClientRect}) {
       onUpdateCalled = true;
+      t.ok(Array.isArray(items), 'items is an Array');
+      t.equal(selectionBoundingClientRect, null, 'selectionBoundingClientRect is null');
     }
 
     const app = tree(<ArticleJsonToContenteditable items={[]} onUpdate={onUpdate}/>);
@@ -88,8 +94,10 @@ if (process.browser) {
     const container = document.createElement('div');
     let onUpdateCalled = false;
 
-    function onUpdate ({articleJson}) {
+    function onUpdate ({items, selectionBoundingClientRect}) {
       onUpdateCalled = true;
+      t.ok(Array.isArray(items), 'items is an Array');
+      t.equal(selectionBoundingClientRect, null, 'selectionBoundingClientRect is null');
     }
 
     const app = tree(<ArticleJsonToContenteditable items={[]} onUpdate={onUpdate}/>);
@@ -110,8 +118,10 @@ if (process.browser) {
     const container = document.createElement('div');
     let onUpdateCalled = false;
 
-    function onUpdate ({articleJson}) {
+    function onUpdate ({items, selectionBoundingClientRect}) {
       onUpdateCalled = true;
+      t.ok(Array.isArray(items), 'items is an Array');
+      t.equal(selectionBoundingClientRect, null, 'selectionBoundingClientRect is null');
     }
 
     const app = tree(<ArticleJsonToContenteditable items={[]} onUpdate={onUpdate}/>);
@@ -132,8 +142,10 @@ if (process.browser) {
     const container = document.createElement('div');
     let onUpdateCalled = false;
 
-    function onUpdate ({articleJson}) {
+    function onUpdate ({items, selectionBoundingClientRect}) {
       onUpdateCalled = true;
+      t.ok(Array.isArray(items), 'items is an Array');
+      t.equal(selectionBoundingClientRect, null, 'selectionBoundingClientRect is null');
     }
 
     const app = tree(<ArticleJsonToContenteditable items={[]} onUpdate={onUpdate}/>);
@@ -150,6 +162,25 @@ if (process.browser) {
     });
   });
 
+  test('<ArticleJsonToContenteditable onUpdate mouseup command', t => {
+    const container = document.createElement('div');
+    let onUpdateCalled = false;
+
+    function onUpdate ({items, selectionBoundingClientRect}) {
+      onUpdateCalled = true;
+      t.ok(Array.isArray(items), 'items is an Array');
+      t.equal(selectionBoundingClientRect, null, 'selectionBoundingClientRect is null');
+    }
+
+    const app = tree(<ArticleJsonToContenteditable items={[]} onUpdate={onUpdate}/>);
+    render(app, container);
+    container.querySelector('article').dispatchEvent(mouseup());
+    process.nextTick(() => {
+      t.ok(onUpdateCalled, 'onUpdate was called');
+      t.end();
+    });
+  });
+
   test('<ArticleJsonToContenteditable onUpdate on blur', t => {
     const container = document.createElement('div');
     const expected = [
@@ -162,18 +193,20 @@ if (process.browser) {
         ]
       }
     ];
-    let onBlurCalled = false;
+    let onUpdateCalled = false;
     let actual;
 
-    function onUpdate ({items}) {
+    function onUpdate ({items, selectionBoundingClientRect}) {
+      onUpdateCalled = true;
       actual = items;
-      onBlurCalled = true;
+      t.ok(Array.isArray(items), 'items is an Array');
+      t.equal(selectionBoundingClientRect, null, 'selectionBoundingClientRect is null');
     }
 
     const app = tree(<ArticleJsonToContenteditable items={[]} onUpdate={onUpdate}/>);
     render(app, container);
     container.querySelector('article').parentNode.dispatchEvent(new window.Event('blur'));
-    t.ok(onBlurCalled, 'onUpdate was called');
+    t.ok(onUpdateCalled, 'onUpdate was called');
     t.deepEqual(actual, expected);
     t.end();
   });
