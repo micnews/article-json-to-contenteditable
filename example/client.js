@@ -79,11 +79,12 @@ const items = [{
   }]
 }];
 
-const onChange = ({items}) => {
-  console.log('in client.js onChange');
-  app.mount(<Article items={items} onInput={onChange} onBlur={onChange}/>);
+const onUpdate = ({items, selectionBoundingClientRect}) => {
+  console.log('in client.js onUpdate');
+  console.log('selectionBoundingClientRect:', selectionBoundingClientRect);
+  app.mount(<Article items={items} onUpdate={onUpdate} />);
 };
 
-const app = tree(<Article items={items} onInput={onChange} onBlur={onChange}/>);
+const app = tree(<Article items={items} onUpdate={onUpdate} />);
 
 render(app, container);
