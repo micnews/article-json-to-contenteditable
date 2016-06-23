@@ -215,14 +215,8 @@ if (process.browser) {
   // Dispatching events does not cause any sideeffects like setting the caret/selection.
   // So here is a separate test for `activeItemIndex` property returned by onUpdate
   // where the caret position is set explicitly.
-  test('<ArticleJsonToContenteditable onUpdate returns activeItemIndex', t => {
+  test('<ArticleJsonToContenteditable onUpdate returns activeItem', t => {
     const container = document.body.appendChild(document.createElement('div'));
-    let onUpdateCalled = false;
-
-    function onUpdate ({activeItemIndex}) {
-      onUpdateCalled = true;
-      t.equals(activeItemIndex, 0);
-    }
 
     const items = [{
       'type': 'paragraph',
@@ -238,8 +232,20 @@ if (process.browser) {
     }];
     const app = tree(<ArticleJsonToContenteditable items={items} onUpdate={onUpdate}/>);
     render(app, container);
+    const firstParagraph = container.querySelector('article p');
 
-    setCaret(container.querySelector('article p'), 0);
+    const expected = {
+      index: 0,
+      boundingClientRect: firstParagraph.getBoundingClientRect()
+    };
+    let onUpdateCalled = false;
+
+    function onUpdate ({activeItem}) {
+      onUpdateCalled = true;
+      t.deepEqual(activeItem, expected);
+    }
+
+    setCaret(firstParagraph, 0);
     container.querySelector('article').dispatchEvent(mouseup());
     t.ok(onUpdateCalled, 'onUpdate was called');
     t.end();

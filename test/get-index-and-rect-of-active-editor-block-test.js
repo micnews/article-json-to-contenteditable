@@ -1,43 +1,59 @@
 import _test from 'tape-catch';
 const test = process.browser ? _test : function () {};
-import getIndexOfActiveEditorBlock from '../lib/get-index-of-active-editor-block';
+import getIndexAndRectOfActiveEditorBlock from '../lib/get-index-and-rect-of-active-editor-block';
 import setCaret from './helpers/set-caret';
 
-test('getIndexOfActiveEditorBlock, no selection', t => {
+test('getIndexAndRectOfActiveEditorBlock, no selection', t => {
   const container = document.body.appendChild(document.createElement('div'));
-  const activeIndex = getIndexOfActiveEditorBlock(container);
-  t.equal(activeIndex, -1);
+  const actual = getIndexAndRectOfActiveEditorBlock(container);
+  const expected = {
+    index: -1,
+    boundingClientRect: null
+  };
+  t.deepEqual(actual, expected);
   t.end();
 });
 
-test('getIndexOfActiveEditorBlock, selection outside of container', t => {
+test('getIndexAndRectOfActiveEditorBlock, selection outside of container', t => {
   const container = document.body.appendChild(document.createElement('div'));
   const outsideOfContainerEl = document.body.appendChild(document.createElement('p'));
   outsideOfContainerEl.innerHTML = 'text text text';
   setCaret(outsideOfContainerEl, 0);
-  const activeIndex = getIndexOfActiveEditorBlock(container);
-  t.equal(activeIndex, -1);
+  const actual = getIndexAndRectOfActiveEditorBlock(container);
+  const expected = {
+    index: -1,
+    boundingClientRect: null
+  };
+  t.deepEqual(actual, expected);
   t.end();
 });
 
-test('getIndexOfActiveEditorBlock, with selection', t => {
+test('getIndexAndRectOfActiveEditorBlock, with selection', t => {
   const container = document.body.appendChild(document.createElement('div'));
   const editorBlock = container.appendChild(document.createElement('p'));
   editorBlock.innerHTML = 'text text text';
   setCaret(editorBlock, 0);
-  const activeIndex = getIndexOfActiveEditorBlock(container);
-  t.equal(activeIndex, 0);
+  const actual = getIndexAndRectOfActiveEditorBlock(container);
+  const expected = {
+    index: 0,
+    boundingClientRect: editorBlock.getBoundingClientRect()
+  };
+  t.deepEqual(actual, expected);
   t.end();
 });
 
-test('getIndexOfActiveEditorBlock, with nested selection', t => {
+test('getIndexAndRectOfActiveEditorBlock, with nested selection', t => {
   const container = document.body.appendChild(document.createElement('div'));
   const editorBlock = container.appendChild(document.createElement('p'));
   const nestedEl = editorBlock.appendChild(document.createElement('span'));
   nestedEl.innerHTML = 'text text text';
   setCaret(nestedEl, 0);
-  const activeIndex = getIndexOfActiveEditorBlock(container);
-  t.equal(activeIndex, 0);
+  const actual = getIndexAndRectOfActiveEditorBlock(container);
+  const expected = {
+    index: 0,
+    boundingClientRect: editorBlock.getBoundingClientRect()
+  };
+  t.deepEqual(actual, expected);
   t.end();
 });
 
@@ -48,7 +64,11 @@ test('getIndexOfActiveItemBlock, multiple blocks', t => {
   const editorBlock = container.appendChild(document.createElement('p'));
   editorBlock.innerHTML = 'text text text';
   setCaret(editorBlock, 0);
-  const activeIndex = getIndexOfActiveEditorBlock(container);
-  t.equal(activeIndex, 2);
+  const actual = getIndexAndRectOfActiveEditorBlock(container);
+  const expected = {
+    index: 2,
+    boundingClientRect: editorBlock.getBoundingClientRect()
+  };
+  t.deepEqual(actual, expected);
   t.end();
 });
