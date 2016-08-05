@@ -5,6 +5,7 @@ import element from 'magic-virtual-element';
 import { renderString, render, tree } from 'deku';
 import createEvent from 'create-event';
 import ArticleJsonToContenteditable from '../lib/index';
+import setCaret from './helpers/set-caret';
 
 test('<ArticleJsonToContenteditable />', t => {
   const expected = renderString(tree(<div contenteditable='true'><article></article></div>));
@@ -208,6 +209,45 @@ if (process.browser) {
     container.querySelector('article').parentNode.dispatchEvent(new window.Event('blur'));
     t.ok(onUpdateCalled, 'onUpdate was called');
     t.deepEqual(actual, expected);
+    t.end();
+  });
+
+  // Dispatching events does not cause any sideeffects like setting the caret/selection.
+  // So here is a separate test for `activeItemIndex` property returned by onUpdate
+  // where the caret position is set explicitly.
+  test('<ArticleJsonToContenteditable onUpdate returns activeItem', t => {
+    const container = document.body.appendChild(document.createElement('div'));
+
+    const items = [{
+      'type': 'paragraph',
+      'children': [{
+        'type': 'text',
+        'content': 'Text text text',
+        'href': null,
+        'italic': false,
+        'bold': false,
+        'mark': false,
+        'markClass': null
+      }]
+    }];
+    const app = tree(<ArticleJsonToContenteditable items={items} onUpdate={onUpdate}/>);
+    render(app, container);
+    const firstParagraph = container.querySelector('article p');
+
+    const expected = {
+      index: 0,
+      boundingClientRect: firstParagraph.getBoundingClientRect()
+    };
+    let onUpdateCalled = false;
+
+    function onUpdate ({activeItem}) {
+      onUpdateCalled = true;
+      t.deepEqual(activeItem, expected);
+    }
+
+    setCaret(firstParagraph, 0);
+    container.querySelector('article').dispatchEvent(mouseup());
+    t.ok(onUpdateCalled, 'onUpdate was called');
     t.end();
   });
 }
