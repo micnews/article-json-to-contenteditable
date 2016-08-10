@@ -250,4 +250,41 @@ if (process.browser) {
     t.ok(onUpdateCalled, 'onUpdate was called');
     t.end();
   });
+
+  test('<ArticleJsonToContenteditable> custom undo/redo', t => {
+    let updateCalled = false;
+    let undoCalled = false;
+    let redoCalled = false;
+    function onUpdate () {
+      updateCalled = true;
+    }
+
+    function onUndo () {
+      undoCalled = true;
+    }
+
+    function onRedo () {
+      redoCalled = true;
+    }
+
+    const container = document.body.appendChild(document.createElement('div'));
+    const app = tree(<ArticleJsonToContenteditable
+      items={[]}
+      onUpdate={onUpdate}
+      onUndo={onUndo}
+      onRedo={onRedo}
+    />);
+    render(app, container);
+
+    const undoCancelled = !container.querySelector('article').dispatchEvent(keydown({meta: true, key: 'Z'}));
+    const redoCancelled = !container.querySelector('article').dispatchEvent(keydown({meta: true, shift: true, key: 'Z'}));
+
+    t.ok(undoCancelled, 'undo event should be cancelled');
+    t.ok(redoCancelled, 'redo event should be cancelled');
+    t.ok(undoCalled, 'onUndo was called');
+    t.ok(redoCalled, 'onRedo was called');
+    t.notOk(updateCalled, 'onUpdate was not called');
+
+    t.end();
+  });
 }
