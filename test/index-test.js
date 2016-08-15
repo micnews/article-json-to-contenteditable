@@ -281,10 +281,13 @@ if (process.browser) {
 
     t.ok(undoCancelled, 'undo event should be cancelled');
     t.ok(redoCancelled, 'redo event should be cancelled');
-    t.ok(undoCalled, 'onUndo was called');
-    t.ok(redoCalled, 'onRedo was called');
-    t.notOk(updateCalled, 'onUpdate was not called');
+    t.ok(updateCalled, 'onUpdate was called');
 
-    t.end();
+    process.nextTick(() => {
+      t.ok(undoCalled, 'onUndo was called');
+      t.ok(redoCalled, 'onRedo was called');
+
+      t.end();
+    });
   });
 }
