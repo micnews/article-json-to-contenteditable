@@ -47,6 +47,8 @@
     "embeds": "^2.5.1",
     "get-selection-range-from-elm": "^1.0.0",
     "html-to-article-json": "^1.12.4",
+    "immutable-array-methods": "^1.3.0",
+    "immutable-object-methods": "^1.3.0",
     "is-image": "^1.0.1",
     "is-url": "^1.2.1",
     "keycode": "^2.1.1",
