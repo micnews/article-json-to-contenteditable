@@ -6,6 +6,7 @@ import { renderString, render, tree } from 'deku';
 import createEvent from 'create-event';
 import ArticleJsonToContenteditable from '../lib/index';
 import setCaret from './helpers/set-caret';
+import setSelection from './helpers/set-selection';
 
 test('<ArticleJsonToContenteditable />', t => {
   const expected = renderString(tree(<div contenteditable='true'><article></article></div>));
@@ -289,5 +290,162 @@ if (process.browser) {
 
       t.end();
     });
+  });
+
+  test('<ArticleJsonToContenteditable> selections default behaviour', t => {
+    const container = document.body.appendChild(document.createElement('div'));
+
+    const items = [{
+      type: 'paragraph',
+      children: [{
+        type: 'text',
+        content: null,
+        href: null,
+        italic: false,
+        bold: false,
+        mark: true,
+        markClass: 'selection-start'
+      }, {
+        type: 'text',
+        content: 'text-1',
+        href: null,
+        italic: false,
+        bold: false,
+        mark: false,
+        markClass: null
+      }, {
+        type: 'text',
+        content: null,
+        href: null,
+        italic: false,
+        bold: false,
+        mark: true,
+        markClass: 'selection-end'
+      }]
+    }, {
+      type: 'paragraph',
+      children: [{
+        type: 'text',
+        content: 'text-2',
+        href: null,
+        italic: false,
+        bold: false,
+        mark: false,
+        markClass: null
+      }]
+    }];
+    const expected = [{
+      type: 'paragraph',
+      children: [{
+        type: 'text',
+        content: 'text-1',
+        href: null,
+        italic: false,
+        bold: false,
+        mark: false,
+        markClass: null
+      }]
+    }, {
+      type: 'paragraph',
+      children: [{
+        type: 'text',
+        content: null,
+        href: null,
+        italic: false,
+        bold: false,
+        mark: true,
+        markClass: 'selection-start'
+      }, {
+        type: 'text',
+        content: 'text-2',
+        href: null,
+        italic: false,
+        bold: false,
+        mark: false,
+        markClass: null
+      }, {
+        type: 'text',
+        content: null,
+        href: null,
+        italic: false,
+        bold: false,
+        mark: true,
+        markClass: 'selection-end'
+      }]
+    }];
+    const app = tree(<ArticleJsonToContenteditable items={items} onUpdate={onUpdate}/>);
+    render(app, container);
+    const secondParagraph = container.querySelectorAll('article p')[1];
+    let onUpdateCalled = false;
+
+    function onUpdate ({items}) {
+      onUpdateCalled = true;
+      t.deepEqual(items, expected);
+    }
+
+    setSelection(secondParagraph, 0, secondParagraph, 1);
+    container.querySelector('article').dispatchEvent(mouseup());
+    t.ok(onUpdateCalled, 'onUpdate was called');
+    t.end();
+  });
+
+  test('<ArticleJsonToContenteditable> selections=false', t => {
+    const container = document.body.appendChild(document.createElement('div'));
+
+    const items = [{
+      type: 'paragraph',
+      children: [{
+        type: 'text',
+        content: null,
+        href: null,
+        italic: false,
+        bold: false,
+        mark: true,
+        markClass: 'selection-start'
+      }, {
+        type: 'text',
+        content: 'text-11',
+        href: null,
+        italic: false,
+        bold: false,
+        mark: false,
+        markClass: null
+      }, {
+        type: 'text',
+        content: null,
+        href: null,
+        italic: false,
+        bold: false,
+        mark: true,
+        markClass: 'selection-end'
+      }]
+    }, {
+      type: 'paragraph',
+      children: [{
+        type: 'text',
+        content: 'text-22',
+        href: null,
+        italic: false,
+        bold: false,
+        mark: false,
+        markClass: null
+      }]
+    }];
+    const expected = items;
+    const app = tree(<ArticleJsonToContenteditable items={items} onUpdate={onUpdate} selections={false} />);
+    render(app, container);
+
+    const secondParagraph = container.querySelectorAll('article p')[1];
+    let onUpdateCalled = false;
+
+    function onUpdate ({items}) {
+      onUpdateCalled = true;
+      t.deepEqual(items, expected, 'Should not have updated selections');
+    }
+
+    setSelection(secondParagraph, 0, secondParagraph, 1);
+    container.querySelector('article').dispatchEvent(mouseup());
+    t.ok(onUpdateCalled, 'onUpdate was called');
+    t.end();
   });
 }
