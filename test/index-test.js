@@ -24,6 +24,18 @@ function mouseup () {
   return new window.MouseEvent('mouseup');
 }
 
+let previousApp;
+function renderAppInContainer (app) {
+  if (previousApp) {
+    previousApp.unmount();
+  }
+
+  const container = document.body.appendChild(document.createElement('div'));
+  render(app, container);
+  previousApp = app;
+  return container;
+}
+
 if (process.browser) {
   test('<ArticleJsonToContenteditable /> items', t => {
     const items = [
@@ -60,8 +72,7 @@ if (process.browser) {
       </article>
     </div>));
     const app = tree(<ArticleJsonToContenteditable items={items} />);
-    const container = document.createElement('div');
-    render(app, container);
+    const container = renderAppInContainer(app);
     const actual = container.innerHTML;
 
     t.equal(actual, expected);
@@ -69,7 +80,6 @@ if (process.browser) {
   });
 
   test('<ArticleJsonToContenteditable onUpdate enter key', t => {
-    const container = document.createElement('div');
     let onUpdateCalled = false;
 
     function onUpdate ({items, selectionBoundingClientRect}) {
@@ -79,7 +89,7 @@ if (process.browser) {
     }
 
     const app = tree(<ArticleJsonToContenteditable items={[]} onUpdate={onUpdate}/>);
-    render(app, container);
+    const container = renderAppInContainer(app);
     container.querySelector('article').dispatchEvent(keydown({ key: 'a' }));
     process.nextTick(() => {
       t.notOk(onUpdateCalled, 'onUpdate was not called');
@@ -93,7 +103,6 @@ if (process.browser) {
   });
 
   test('<ArticleJsonToContenteditable onUpdate backspace', t => {
-    const container = document.createElement('div');
     let onUpdateCalled = false;
 
     function onUpdate ({items, selectionBoundingClientRect}) {
@@ -103,7 +112,7 @@ if (process.browser) {
     }
 
     const app = tree(<ArticleJsonToContenteditable items={[]} onUpdate={onUpdate}/>);
-    render(app, container);
+    const container = renderAppInContainer(app);
     container.querySelector('article').dispatchEvent(keydown({ key: 'a' }));
     process.nextTick(() => {
       t.notOk(onUpdateCalled, 'onUpdate was not called');
@@ -117,7 +126,6 @@ if (process.browser) {
   });
 
   test('<ArticleJsonToContenteditable onUpdate bold command', t => {
-    const container = document.createElement('div');
     let onUpdateCalled = false;
 
     function onUpdate ({items, selectionBoundingClientRect}) {
@@ -127,7 +135,7 @@ if (process.browser) {
     }
 
     const app = tree(<ArticleJsonToContenteditable items={[]} onUpdate={onUpdate}/>);
-    render(app, container);
+    const container = renderAppInContainer(app);
     container.querySelector('article').dispatchEvent(keydown({ key: 'a' }));
     process.nextTick(() => {
       t.notOk(onUpdateCalled, 'onUpdate was not called');
@@ -141,7 +149,6 @@ if (process.browser) {
   });
 
   test('<ArticleJsonToContenteditable onUpdate itaic command', t => {
-    const container = document.createElement('div');
     let onUpdateCalled = false;
 
     function onUpdate ({items, selectionBoundingClientRect}) {
@@ -151,7 +158,7 @@ if (process.browser) {
     }
 
     const app = tree(<ArticleJsonToContenteditable items={[]} onUpdate={onUpdate}/>);
-    render(app, container);
+    const container = renderAppInContainer(app);
     container.querySelector('article').dispatchEvent(keydown({ key: 'a' }));
     process.nextTick(() => {
       t.notOk(onUpdateCalled, 'onUpdate was not called');
@@ -165,7 +172,6 @@ if (process.browser) {
   });
 
   test('<ArticleJsonToContenteditable onUpdate mouseup command', t => {
-    const container = document.createElement('div');
     let onUpdateCalled = false;
 
     function onUpdate ({items, selectionBoundingClientRect}) {
@@ -175,7 +181,7 @@ if (process.browser) {
     }
 
     const app = tree(<ArticleJsonToContenteditable items={[]} onUpdate={onUpdate}/>);
-    render(app, container);
+    const container = renderAppInContainer(app);
     container.querySelector('article').dispatchEvent(mouseup());
     process.nextTick(() => {
       t.ok(onUpdateCalled, 'onUpdate was called');
@@ -184,7 +190,6 @@ if (process.browser) {
   });
 
   test('<ArticleJsonToContenteditable onUpdate on blur', t => {
-    const container = document.createElement('div');
     const expected = [
       {
         type: 'paragraph',
@@ -206,7 +211,7 @@ if (process.browser) {
     }
 
     const app = tree(<ArticleJsonToContenteditable items={[]} onUpdate={onUpdate}/>);
-    render(app, container);
+    const container = renderAppInContainer(app);
     container.querySelector('article').parentNode.dispatchEvent(new window.Event('blur'));
     t.ok(onUpdateCalled, 'onUpdate was called');
     t.deepEqual(actual, expected);
@@ -217,8 +222,6 @@ if (process.browser) {
   // So here is a separate test for `activeItemIndex` property returned by onUpdate
   // where the caret position is set explicitly.
   test('<ArticleJsonToContenteditable onUpdate returns activeItem', t => {
-    const container = document.body.appendChild(document.createElement('div'));
-
     const items = [{
       'type': 'paragraph',
       'children': [{
@@ -232,7 +235,7 @@ if (process.browser) {
       }]
     }];
     const app = tree(<ArticleJsonToContenteditable items={items} onUpdate={onUpdate}/>);
-    render(app, container);
+    const container = renderAppInContainer(app);
     const firstParagraph = container.querySelector('article p');
 
     const expected = {
@@ -268,14 +271,13 @@ if (process.browser) {
       redoCalled = true;
     }
 
-    const container = document.body.appendChild(document.createElement('div'));
     const app = tree(<ArticleJsonToContenteditable
       items={[]}
       onUpdate={onUpdate}
       onUndo={onUndo}
       onRedo={onRedo}
     />);
-    render(app, container);
+    const container = renderAppInContainer(app);
 
     const undoCancelled = !container.querySelector('article').dispatchEvent(keydown({meta: true, key: 'Z'}));
     const redoCancelled = !container.querySelector('article').dispatchEvent(keydown({meta: true, shift: true, key: 'Z'}));
@@ -293,9 +295,7 @@ if (process.browser) {
   });
 
   test('<ArticleJsonToContenteditable> selections default behaviour', t => {
-    const container = document.body.appendChild(document.createElement('div'));
-
-    const items = [{
+    const initialItems = [{
       type: 'paragraph',
       children: [{
         type: 'text',
@@ -377,8 +377,8 @@ if (process.browser) {
         markClass: 'selection-end'
       }]
     }];
-    const app = tree(<ArticleJsonToContenteditable items={items} onUpdate={onUpdate}/>);
-    render(app, container);
+    const app = tree(<ArticleJsonToContenteditable items={initialItems} onUpdate={onUpdate}/>);
+    const container = renderAppInContainer(app);
     const secondParagraph = container.querySelectorAll('article p')[1];
     let onUpdateCalled = false;
 
@@ -390,12 +390,11 @@ if (process.browser) {
     setSelection(secondParagraph, 0, secondParagraph, 1);
     container.querySelector('article').dispatchEvent(mouseup());
     t.ok(onUpdateCalled, 'onUpdate was called');
+    app.unmount();
     t.end();
   });
 
   test('<ArticleJsonToContenteditable> selections=false', t => {
-    const container = document.body.appendChild(document.createElement('div'));
-
     const items = [{
       type: 'paragraph',
       children: [{
@@ -441,8 +440,7 @@ if (process.browser) {
     }];
     const expected = items;
     const app = tree(<ArticleJsonToContenteditable items={items} onUpdate={onUpdate} selections={false} />);
-    render(app, container);
-
+    const container = renderAppInContainer(app);
     const secondParagraph = container.querySelectorAll('article p')[1];
     let onUpdateCalled = false;
 
