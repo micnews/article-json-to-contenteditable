@@ -342,6 +342,7 @@ if (process.browser) {
         href: null,
         italic: false,
         bold: false,
+        strikethrough: false,
         mark: false,
         markClass: null
       }]
@@ -353,6 +354,7 @@ if (process.browser) {
         href: null,
         italic: false,
         bold: false,
+        strikethrough: false,
         mark: true,
         markClass: 'selection-start'
       }, {
@@ -361,6 +363,7 @@ if (process.browser) {
         href: null,
         italic: false,
         bold: false,
+        strikethrough: false,
         mark: false,
         markClass: null
       }, {
@@ -369,6 +372,7 @@ if (process.browser) {
         href: null,
         italic: false,
         bold: false,
+        strikethrough: false,
         mark: true,
         markClass: 'selection-end'
       }]
@@ -400,6 +404,7 @@ if (process.browser) {
         href: null,
         italic: false,
         bold: false,
+        strikethrough: false,
         mark: true,
         markClass: 'selection-start'
       }, {
@@ -408,6 +413,7 @@ if (process.browser) {
         href: null,
         italic: false,
         bold: false,
+        strikethrough: false,
         mark: false,
         markClass: null
       }, {
@@ -416,6 +422,7 @@ if (process.browser) {
         href: null,
         italic: false,
         bold: false,
+        strikethrough: false,
         mark: true,
         markClass: 'selection-end'
       }]
@@ -427,6 +434,7 @@ if (process.browser) {
         href: null,
         italic: false,
         bold: false,
+        strikethrough: false,
         mark: false,
         markClass: null
       }]
