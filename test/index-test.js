@@ -7,6 +7,7 @@ import createEvent from 'create-event';
 import setupArticleJsonToContenteditable from '../lib/index';
 import setCaret from './helpers/set-caret';
 import setSelection from './helpers/set-selection';
+import parseKeyCode from 'keycode';
 
 const ArticleJsonToContenteditable = setupArticleJsonToContenteditable();
 
@@ -257,40 +258,34 @@ if (process.browser) {
     t.end();
   });
 
-  test('<ArticleJsonToContenteditable> custom undo/redo', t => {
+  test('<ArticleJsonToContenteditable customKeyDown', t => {
+    let customKeyDownCalled = false;
     let updateCalled = false;
-    let undoCalled = false;
-    let redoCalled = false;
+
+    function getCustomKeyDown (e) {
+      if (e.metaKey && parseKeyCode(e.keyCode) === 's') {
+        return () => {
+          customKeyDownCalled = true;
+        };
+      }
+    }
+
     function onUpdate () {
       updateCalled = true;
-    }
-
-    function onUndo () {
-      undoCalled = true;
-    }
-
-    function onRedo () {
-      redoCalled = true;
     }
 
     const app = tree(<ArticleJsonToContenteditable
       items={[]}
       onUpdate={onUpdate}
-      onUndo={onUndo}
-      onRedo={onRedo}
+      getCustomKeyDown={getCustomKeyDown}
     />);
     const container = renderAppInContainer(app);
-
-    const undoCancelled = !container.querySelector('article').dispatchEvent(keydown({meta: true, key: 'Z'}));
-    const redoCancelled = !container.querySelector('article').dispatchEvent(keydown({meta: true, shift: true, key: 'Z'}));
-
-    t.ok(undoCancelled, 'undo event should be cancelled');
-    t.ok(redoCancelled, 'redo event should be cancelled');
+    const customKeyDownCancelled = !container.querySelector('article').dispatchEvent(keydown({meta: true, key: 's'}));
     t.ok(updateCalled, 'onUpdate was called');
+    t.ok(customKeyDownCancelled, 'customKeyDown event should be cancelled');
 
     process.nextTick(() => {
-      t.ok(undoCalled, 'onUndo was called');
-      t.ok(redoCalled, 'onRedo was called');
+      t.ok(customKeyDownCalled, 'customKeyDown was called');
 
       t.end();
     });
