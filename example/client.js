@@ -1,7 +1,8 @@
 import {render, tree} from 'deku';
-import Article from '../lib';
+import setupArticle from '../lib';
 import element from 'magic-virtual-element';
 
+const Article = setupArticle();
 const container = document.querySelector('#editor');
 
 const items = [{
@@ -79,12 +80,24 @@ const items = [{
   }]
 }];
 
-const onUpdate = ({items, selectionBoundingClientRect}) => {
-  console.log('in client.js onUpdate');
-  console.log('selectionBoundingClientRect:', selectionBoundingClientRect);
-  app.mount(<Article items={items} onUpdate={onUpdate} />);
+const getCustomKeyDown = (e) => {
+  // Return method(s) to handle any keydown events you want custom
+  // handling for, like undo/redo etc.
+  const zKeyCode = 90;
+  if (e.metaKey && e.keyCode === zKeyCode) {
+    return function handleUndoRedo () {
+      console.log('should undo/redo');
+    };
+  }
 };
 
-const app = tree(<Article items={items} onUpdate={onUpdate} />);
+const onUpdate = ({items, selectionBoundingClientRect, activeItem}) => {
+  console.log('in client.js onUpdate');
+  console.log('selectionBoundingClientRect:', selectionBoundingClientRect);
+  console.log('activeItem:', activeItem);
+  app.mount(<Article items={items} onUpdate={onUpdate} getCustomKeyDown={getCustomKeyDown} />);
+};
+
+const app = tree(<Article items={items} onUpdate={onUpdate} getCustomKeyDown={getCustomKeyDown} />);
 
 render(app, container);
