@@ -42,7 +42,7 @@
     "testron": "^1.2.0"
   },
   "dependencies": {
-    "article-json-html-render": "^2.1.0",
+    "article-json-html-render": "^3.0.0",
     "deku": "^1.0.0",
     "embeds": "^2.5.1",
     "get-selection-range-from-elm": "^1.0.0",
