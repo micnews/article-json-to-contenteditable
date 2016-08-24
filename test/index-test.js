@@ -4,9 +4,11 @@ import test from 'tape-catch';
 import element from 'magic-virtual-element';
 import { renderString, render, tree } from 'deku';
 import createEvent from 'create-event';
-import ArticleJsonToContenteditable from '../lib/index';
+import setupArticleJsonToContenteditable from '../lib/index';
 import setCaret from './helpers/set-caret';
 import setSelection from './helpers/set-selection';
+
+const ArticleJsonToContenteditable = setupArticleJsonToContenteditable();
 
 test('<ArticleJsonToContenteditable />', t => {
   const expected = renderString(tree(<div contenteditable='true'><article></article></div>));
