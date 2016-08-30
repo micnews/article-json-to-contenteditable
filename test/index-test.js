@@ -12,7 +12,7 @@ import parseKeyCode from 'keycode';
 const ArticleJsonToContenteditable = setupArticleJsonToContenteditable();
 
 test('<ArticleJsonToContenteditable />', t => {
-  const expected = renderString(tree(<div contenteditable='true'><article></article></div>));
+  const expected = renderString(tree(<article contenteditable='true'></article>));
   const actual = renderString(tree(<ArticleJsonToContenteditable items={[]} />));
 
   t.equal(actual, expected);
@@ -66,14 +66,13 @@ if (process.browser) {
       }
     ];
 
-    const expected = renderString(tree(<div contenteditable='true'>
-      <article>
+    const expected = renderString(tree(
+      <article contenteditable='true'>
         <p>Text text text</p>
         <figure contenteditable='false'>
           <iframe id='instagram-tsxp1hhQTG' type='instagram' frameborder='0' width='100%' src='javascript:false'></iframe>
         </figure>
-      </article>
-    </div>));
+      </article>));
     const app = tree(<ArticleJsonToContenteditable items={items} />);
     const container = renderAppInContainer(app);
     const actual = container.innerHTML;
@@ -215,7 +214,7 @@ if (process.browser) {
 
     const app = tree(<ArticleJsonToContenteditable items={[]} onUpdate={onUpdate}/>);
     const container = renderAppInContainer(app);
-    container.querySelector('article').parentNode.dispatchEvent(new window.Event('blur'));
+    container.querySelector('article').dispatchEvent(new window.Event('blur'));
     t.ok(onUpdateCalled, 'onUpdate was called');
     t.deepEqual(actual, expected);
     t.end();
