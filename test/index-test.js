@@ -81,7 +81,7 @@ if (process.browser) {
     t.end();
   });
 
-  test('<ArticleJsonToContenteditable onUpdate enter key', t => {
+  test('<ArticleJsonToContenteditable onUpdate keydown', t => {
     let onUpdateCalled = false;
 
     function onUpdate ({items, selectionBoundingClientRect}) {
@@ -93,83 +93,10 @@ if (process.browser) {
     const app = tree(<ArticleJsonToContenteditable items={[]} onUpdate={onUpdate}/>);
     const container = renderAppInContainer(app);
     container.querySelector('article').dispatchEvent(keydown({ key: 'a' }));
+    t.notOk(onUpdateCalled, 'onUpdate was not called');
     process.nextTick(() => {
-      t.notOk(onUpdateCalled, 'onUpdate was not called');
-
-      container.querySelector('article').dispatchEvent(keydown({ key: 'enter' }));
-      process.nextTick(() => {
-        t.ok(onUpdateCalled, 'onUpdate was called');
-        t.end();
-      });
-    });
-  });
-
-  test('<ArticleJsonToContenteditable onUpdate backspace', t => {
-    let onUpdateCalled = false;
-
-    function onUpdate ({items, selectionBoundingClientRect}) {
-      onUpdateCalled = true;
-      t.ok(Array.isArray(items), 'items is an Array');
-      t.equal(selectionBoundingClientRect, null, 'selectionBoundingClientRect is null');
-    }
-
-    const app = tree(<ArticleJsonToContenteditable items={[]} onUpdate={onUpdate}/>);
-    const container = renderAppInContainer(app);
-    container.querySelector('article').dispatchEvent(keydown({ key: 'a' }));
-    process.nextTick(() => {
-      t.notOk(onUpdateCalled, 'onUpdate was not called');
-
-      container.querySelector('article').dispatchEvent(keydown({ key: 'backspace' }));
-      process.nextTick(() => {
-        t.ok(onUpdateCalled, 'onUpdate was called');
-        t.end();
-      });
-    });
-  });
-
-  test('<ArticleJsonToContenteditable onUpdate bold command', t => {
-    let onUpdateCalled = false;
-
-    function onUpdate ({items, selectionBoundingClientRect}) {
-      onUpdateCalled = true;
-      t.ok(Array.isArray(items), 'items is an Array');
-      t.equal(selectionBoundingClientRect, null, 'selectionBoundingClientRect is null');
-    }
-
-    const app = tree(<ArticleJsonToContenteditable items={[]} onUpdate={onUpdate}/>);
-    const container = renderAppInContainer(app);
-    container.querySelector('article').dispatchEvent(keydown({ key: 'a' }));
-    process.nextTick(() => {
-      t.notOk(onUpdateCalled, 'onUpdate was not called');
-
-      container.querySelector('article').dispatchEvent(keydown({ meta: true, key: 'b' }));
-      process.nextTick(() => {
-        t.ok(onUpdateCalled, 'onUpdate was called');
-        t.end();
-      });
-    });
-  });
-
-  test('<ArticleJsonToContenteditable onUpdate itaic command', t => {
-    let onUpdateCalled = false;
-
-    function onUpdate ({items, selectionBoundingClientRect}) {
-      onUpdateCalled = true;
-      t.ok(Array.isArray(items), 'items is an Array');
-      t.equal(selectionBoundingClientRect, null, 'selectionBoundingClientRect is null');
-    }
-
-    const app = tree(<ArticleJsonToContenteditable items={[]} onUpdate={onUpdate}/>);
-    const container = renderAppInContainer(app);
-    container.querySelector('article').dispatchEvent(keydown({ key: 'a' }));
-    process.nextTick(() => {
-      t.notOk(onUpdateCalled, 'onUpdate was not called');
-
-      container.querySelector('article').dispatchEvent(keydown({ meta: true, key: 'i' }));
-      process.nextTick(() => {
-        t.ok(onUpdateCalled, 'onUpdate was called');
-        t.end();
-      });
+      t.ok(onUpdateCalled, 'onUpdate was called');
+      t.end();
     });
   });
 
