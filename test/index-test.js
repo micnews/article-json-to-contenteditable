@@ -207,10 +207,10 @@ if (process.browser) {
     />);
     const container = renderAppInContainer(app);
     const customKeyDownCancelled = !container.querySelector('article').dispatchEvent(keydown({meta: true, key: 's'}));
-    t.ok(updateCalled, 'onUpdate was called');
     t.ok(customKeyDownCancelled, 'customKeyDown event should be cancelled');
 
     process.nextTick(() => {
+      t.notOk(updateCalled, 'onUpdate was not called');
       t.ok(customKeyDownCalled, 'customKeyDown was called');
 
       t.end();
