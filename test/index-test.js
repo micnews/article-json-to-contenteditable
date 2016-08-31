@@ -377,4 +377,58 @@ if (process.browser) {
     t.ok(onUpdateCalled, 'onUpdate was called');
     t.end();
   });
+
+  test('<ArticleJsonToContenteditable onUpdate paste', t => {
+    let onUpdateCalled = false;
+
+    function onUpdate ({items, selectionBoundingClientRect}) {
+      onUpdateCalled = true;
+      t.ok(Array.isArray(items), 'items is an Array');
+      t.equal(selectionBoundingClientRect, null, 'selectionBoundingClientRect is null');
+    }
+
+    const app = tree(<ArticleJsonToContenteditable items={[]} onUpdate={onUpdate}/>);
+    const container = renderAppInContainer(app);
+    container.querySelector('article').dispatchEvent(keydown({ meta: true, key: 'v' }));
+    t.notOk(onUpdateCalled, 'onUpdate was not called for metaKey + v');
+    process.nextTick(() => {
+      t.notOk(onUpdateCalled, 'onUpdate was not called for metaKey + v in next tick');
+
+      const event = new window.KeyboardEvent('paste');
+      container.querySelector('article').dispatchEvent(event);
+
+      t.notOk(onUpdateCalled, 'onUpdate was not called for onPaste');
+      process.nextTick(() => {
+        t.ok(onUpdateCalled, 'onUpdate was called for onPaste in next tick');
+        t.end();
+      });
+    });
+  });
+
+  test('<ArticleJsonToContenteditable onUpdate cut', t => {
+    let onUpdateCalled = false;
+
+    function onUpdate ({items, selectionBoundingClientRect}) {
+      onUpdateCalled = true;
+      t.ok(Array.isArray(items), 'items is an Array');
+      t.equal(selectionBoundingClientRect, null, 'selectionBoundingClientRect is null');
+    }
+
+    const app = tree(<ArticleJsonToContenteditable items={[]} onUpdate={onUpdate}/>);
+    const container = renderAppInContainer(app);
+    container.querySelector('article').dispatchEvent(keydown({ meta: true, key: 'x' }));
+    t.notOk(onUpdateCalled, 'onUpdate was not called for metaKey + x');
+    process.nextTick(() => {
+      t.notOk(onUpdateCalled, 'onUpdate was not called for metaKey + x in next tick');
+
+      const event = new window.KeyboardEvent('cut');
+      container.querySelector('article').dispatchEvent(event);
+
+      t.notOk(onUpdateCalled, 'onUpdate was not called for onPaste');
+      process.nextTick(() => {
+        t.ok(onUpdateCalled, 'onUpdate was called for onPaste in next tick');
+        t.end();
+      });
+    });
+  });
 }
