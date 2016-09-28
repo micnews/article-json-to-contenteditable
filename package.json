@@ -55,6 +55,6 @@
     "magic-virtual-element": "^1.0.6",
     "morphdom": "^2.0.0",
     "object-assign": "^4.1.0",
-    "save-selection": "^1.0.0"
+    "save-selection": "^2.0.0"
   }
 }
