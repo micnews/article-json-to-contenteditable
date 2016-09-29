@@ -431,4 +431,21 @@ if (process.browser) {
       });
     });
   });
+
+  test('<ArticleJsonToContenteditable keep figureProps', t => {
+    const items = [{
+      type: 'embed',
+      embedType: 'image',
+      src: 'http://image-source.jpg',
+      figureProps: {
+        class: 'beep-boop'
+      }
+    }];
+    const app = tree(<ArticleJsonToContenteditable items={items} />);
+    const container = renderAppInContainer(app);
+    const actual = container.querySelector('figure').className;
+    const expected = 'beep-boop';
+    t.is(actual, expected);
+    t.end();
+  });
 }
