@@ -132,11 +132,12 @@ if (process.browser) {
     let onUpdateCalled = false;
     let actual;
 
-    function onUpdate ({items, selectionBoundingClientRect}) {
+    function onUpdate ({items, selectionBoundingClientRect, activeItem}) {
       onUpdateCalled = true;
       actual = items;
       t.ok(Array.isArray(items), 'items is an Array');
-      t.equal(selectionBoundingClientRect, null, 'selectionBoundingClientRect is null');
+      t.equal(selectionBoundingClientRect, undefined, 'selectionBoundingClientRect is undefined');
+      t.equal(activeItem, undefined, 'selectionBoundingClientRect is undefined');
     }
 
     const app = tree(<ArticleJsonToContenteditable items={[]} onUpdate={onUpdate}/>);
@@ -312,6 +313,88 @@ if (process.browser) {
 
     setSelection(secondParagraph, 0, secondParagraph, 1);
     container.querySelector('article').dispatchEvent(mouseup());
+    t.ok(onUpdateCalled, 'onUpdate was called');
+    app.unmount();
+    t.end();
+  });
+
+  test('<ArticleJsonToContenteditable> no saved selections on blur', t => {
+    const initialItems = [{
+      type: 'paragraph',
+      children: [{
+        type: 'text',
+        content: null,
+        href: null,
+        italic: false,
+        bold: false,
+        mark: true,
+        markClass: 'selection-start'
+      }, {
+        type: 'text',
+        content: 'text-1',
+        href: null,
+        italic: false,
+        bold: false,
+        mark: false,
+        markClass: null
+      }, {
+        type: 'text',
+        content: null,
+        href: null,
+        italic: false,
+        bold: false,
+        mark: true,
+        markClass: 'selection-end'
+      }]
+    }, {
+      type: 'paragraph',
+      children: [{
+        type: 'text',
+        content: 'text-2',
+        href: null,
+        italic: false,
+        bold: false,
+        mark: false,
+        markClass: null
+      }]
+    }];
+    const expected = [{
+      type: 'paragraph',
+      children: [{
+        type: 'text',
+        content: 'text-1',
+        href: null,
+        italic: false,
+        bold: false,
+        strikethrough: false,
+        mark: false,
+        markClass: null
+      }]
+    }, {
+      type: 'paragraph',
+      children: [{
+        type: 'text',
+        content: 'text-2',
+        href: null,
+        italic: false,
+        bold: false,
+        strikethrough: false,
+        mark: false,
+        markClass: null
+      }]
+    }];
+    const app = tree(<ArticleJsonToContenteditable items={initialItems} onUpdate={onUpdate}/>);
+    const container = renderAppInContainer(app);
+    const secondParagraph = container.querySelectorAll('article p')[1];
+    let onUpdateCalled = false;
+
+    function onUpdate ({items}) {
+      onUpdateCalled = true;
+      t.deepEqual(items, expected);
+    }
+
+    setSelection(secondParagraph, 0, secondParagraph, 1);
+    container.querySelector('article').dispatchEvent(new window.Event('blur'));
     t.ok(onUpdateCalled, 'onUpdate was called');
     app.unmount();
     t.end();
