@@ -2,6 +2,7 @@ import _test from 'tape-catch';
 import FacebookEmbed from '../lib/embeds/facebook';
 import InstagramEmbed from '../lib/embeds/instagram';
 import TwitterEmbed from '../lib/embeds/twitter';
+import TumblrEmbed from '../lib/embeds/tumblr';
 import loadEmbed from '../lib/embeds/load-embed';
 import {render, renderString, tree} from 'deku';
 import element from 'magic-virtual-element';
@@ -13,7 +14,9 @@ const fixtures = {
   instagramPost:
     fs.readFileSync(`${__dirname}/fixtures/instagram-post.html`, 'utf8').trim(),
   twitterPost:
-    fs.readFileSync(`${__dirname}/fixtures/twitter-post.html`, 'utf8').trim()
+    fs.readFileSync(`${__dirname}/fixtures/twitter-post.html`, 'utf8').trim(),
+  tumblrPost:
+    fs.readFileSync(`${__dirname}/fixtures/tumblr-post.html`, 'utf8').trim()
 };
 
 const test = process.browser ? _test : function () {};
@@ -206,4 +209,43 @@ test('loadEmbed()', t => {
   t.ok(onResizeCalled, 'onResizeCalled');
   t.equals(content, iframe.contentWindow.document.body.innerHTML);
   t.end();
+});
+
+test('TumblrEmbed - body', t => {
+  const actual = renderString(tree(<TumblrEmbed id='153824541111' url='https://embed.tumblr.com/embed/post/xlBeooAJ19N2jNN7Y_z92A/153824541111' />));
+  const expected = renderString(tree(
+    <iframe id='tumblr-153824541111' type='tumblr' frameBorder='0' width='100%' src='javascript:false'></iframe>));
+  t.equal(actual, expected);
+  t.end();
+});
+
+test('TumblrEmbed - onLoaded', t => {
+  const opts = {
+    id: '153824541111',
+    url: 'https://embed.tumblr.com/embed/post/xlBeooAJ19N2jNN7Y_z92A/153824541111'
+  };
+
+  const el = document.body.appendChild(document.createElement('div'));
+  const expectedPost = fixtures.tumblrPost;
+  const onLoaded = () => {
+    const iframeBody = el.querySelector('iframe').contentWindow.document.body;
+    const actualPost = iframeBody.innerHTML;
+
+    t.equal(actualPost, expectedPost);
+    t.end();
+  };
+  render(tree(<TumblrEmbed {...opts} onLoaded={onLoaded} />), el);
+});
+
+test('TumblrEmbed - onResize', t => {
+  const opts = {
+    id: '153824541111',
+    url: 'https://embed.tumblr.com/embed/post/xlBeooAJ19N2jNN7Y_z92A/153824541111'
+  };
+  const el = document.body.appendChild(document.createElement('div'));
+  const onResize = ({height}) => {
+    t.ok(height > 0);
+    t.end();
+  };
+  render(tree(<TumblrEmbed {...opts} onResize={onResize} />), el);
 });
