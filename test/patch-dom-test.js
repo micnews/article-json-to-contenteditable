@@ -321,3 +321,101 @@ test('patchDom() formatting and move with identical paragraphs', t => {
   t.is(pretty(oldArticleElm.innerHTML), pretty('<p><b>beep</b></p><p>beep</p><p>boop</p>'));
   t.end();
 });
+
+test('patchDom() add embed attribution', t => {
+  const oldItems = [{
+    type: 'embed',
+    embedType: 'facebook',
+    url: 'https://www.facebook.com/david.bjorklund/posts/10153809692501070'
+  }];
+  const newItems = [{
+    type: 'embed',
+    embedType: 'facebook',
+    url: 'https://www.facebook.com/david.bjorklund/posts/10153809692501070',
+    attribution: [
+     {type: 'text', content: 'Source: '},
+     {type: 'text', content: 'author/source', href: 'http://example.com'}
+   ],
+   caption: [{type: 'text', content: 'Embed caption'}]
+  }];
+  const oldArticleElm = renderArticle(oldItems);
+  const newArticleElm = renderArticle(newItems);
+  patchDom({oldArticleElm, newArticleElm});
+
+  t.is(pretty(oldArticleElm.innerHTML), pretty(
+    `<figure>
+      <iframe id="facebook-davidbjorklundposts10153809692501070" type="facebook"
+      frameborder="0" width="100%" src="javascript:false"></iframe>
+      <figcaption>Embed caption
+        <cite>Source: <a href="http://example.com">author/source</a></cite>
+      </figcaption>
+    </figure>`
+  ));
+  t.end();
+});
+
+test('patchDom() remove embed attribution', t => {
+  const oldItems = [{
+    type: 'embed',
+    embedType: 'facebook',
+    url: 'https://www.facebook.com/david.bjorklund/posts/10153809692501070',
+    attribution: [
+     {type: 'text', content: 'Source: '},
+     {type: 'text', content: 'author/source', href: 'http://example.com'}
+   ],
+   caption: [{type: 'text', content: 'Embed caption'}]
+  }];
+  const newItems = [{
+    type: 'embed',
+    embedType: 'facebook',
+    url: 'https://www.facebook.com/david.bjorklund/posts/10153809692501070'
+  }];
+  const oldArticleElm = renderArticle(oldItems);
+  const newArticleElm = renderArticle(newItems);
+  patchDom({oldArticleElm, newArticleElm});
+
+  t.is(pretty(oldArticleElm.innerHTML), pretty(
+    `<figure>
+      <iframe id="facebook-davidbjorklundposts10153809692501070" type="facebook"
+      frameborder="0" width="100%" src="javascript:false"></iframe>
+    </figure>`
+  ));
+  t.end();
+});
+
+test('patchDom() edit embed attribution', t => {
+  const oldItems = [{
+    type: 'embed',
+    embedType: 'facebook',
+    url: 'https://www.facebook.com/david.bjorklund/posts/10153809692501070',
+    attribution: [
+     {type: 'text', content: 'Source: '},
+     {type: 'text', content: 'author/source', href: 'http://example.com'}
+   ],
+   caption: [{type: 'text', content: 'Embed caption'}]
+  }];
+  const newItems = [{
+    type: 'embed',
+    embedType: 'facebook',
+    url: 'https://www.facebook.com/david.bjorklund/posts/10153809692501070',
+    attribution: [
+     {type: 'text', content: 'Source: '},
+     {type: 'text', content: 'author/source', href: 'http://example-2.com'}
+   ],
+   caption: [{type: 'text', content: 'Updated embed caption'}]
+  }];
+  const oldArticleElm = renderArticle(oldItems);
+  const newArticleElm = renderArticle(newItems);
+  patchDom({oldArticleElm, newArticleElm});
+
+  t.is(pretty(oldArticleElm.innerHTML), pretty(
+    `<figure>
+      <iframe id="facebook-davidbjorklundposts10153809692501070" type="facebook"
+      frameborder="0" width="100%" src="javascript:false"></iframe>
+      <figcaption>Updated embed caption
+        <cite>Source: <a href="http://example-2.com">author/source</a></cite>
+      </figcaption>
+    </figure>`
+  ));
+  t.end();
+});
