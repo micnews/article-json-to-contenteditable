@@ -189,6 +189,50 @@ test('patchDom() insert paragraph between embeds', t => {
   t.end();
 });
 
+test('patchDom() insert paragraph between embeds', t => {
+  const oldItems = [{
+    type: 'embed',
+    embedType: 'facebook',
+    url: 'https://www.facebook.com/david.bjorklund/posts/10153809692501070'
+  }, {
+    type: 'paragraph',
+    children: [{
+      type: 'text',
+      content: 'beep boop'
+    }]
+  }, {
+    type: 'embed',
+    embedType: 'instagram',
+    id: 'tsxp1hhQTG',
+    url: 'https://instagram.com/p/tsxp1hhQTG'
+  }];
+  const newItems = [{
+    type: 'embed',
+    embedType: 'facebook',
+    url: 'https://www.facebook.com/david.bjorklund/posts/10153809692501070'
+  }, {
+    type: 'embed',
+    embedType: 'instagram',
+    id: 'tsxp1hhQTG',
+    url: 'https://instagram.com/p/tsxp1hhQTG'
+  }];
+  const oldArticleElm = renderArticle(oldItems);
+  const newArticleElm = renderArticle(newItems);
+  patchDom({oldArticleElm, newArticleElm});
+
+  t.is(pretty(oldArticleElm.innerHTML), pretty(
+    `<figure>
+      <iframe id="facebook-davidbjorklundposts10153809692501070" type="facebook"
+      frameborder="0" width="100%" src="javascript:false"></iframe>
+    </figure>
+    <figure>
+      <iframe id="instagram-tsxp1hhQTG" type="instagram" frameborder="0"
+        width="100%" src="javascript:false"></iframe>
+    </figure>`
+  ));
+  t.end();
+});
+
 test('patchDom() move paragraph', t => {
   const oldItems = [{
     type: 'paragraph',
