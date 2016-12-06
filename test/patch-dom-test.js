@@ -181,3 +181,85 @@ test('patchDom() insert paragraph between embeds', t => {
   ].join(''));
   t.end();
 });
+
+test('patchDom() move paragraph', t => {
+  const oldItems = [{
+    type: 'paragraph',
+    children: [{
+      type: 'text',
+      content: 'beep'
+    }]
+  }, {
+    type: 'paragraph',
+    children: [{
+      type: 'text',
+      content: 'boop'
+    }]
+  }, {
+    type: 'paragraph',
+    children: [{
+      type: 'text',
+      content: 'baap'
+    }]
+  }];
+  const newItems = [{
+    type: 'paragraph',
+    children: [{
+      type: 'text',
+      content: 'boop'
+    }]
+  }, {
+    type: 'paragraph',
+    children: [{
+      type: 'text',
+      content: 'beep'
+    }]
+  }, {
+    type: 'paragraph',
+    children: [{
+      type: 'text',
+      content: 'baap'
+    }]
+  }];
+  const oldArticleElm = renderArticle(oldItems);
+  const newArticleElm = renderArticle(newItems);
+  patchDom({oldArticleElm, newArticleElm});
+
+  t.is(oldArticleElm.innerHTML, '<p>boop</p><p>beep</p><p>baap</p>');
+  t.end();
+});
+
+test('patchDom() move embed', t => {
+  const oldItems = [{
+    type: 'embed',
+    embedType: 'instagram',
+    id: 'tsxp1hhQTG',
+    url: 'https://instagram.com/p/tsxp1hhQTG'
+  }, {
+    type: 'embed',
+    embedType: 'facebook',
+    url: 'https://www.facebook.com/david.bjorklund/posts/10153809692501070'
+  }];
+  const newItems = [{
+    type: 'embed',
+    embedType: 'facebook',
+    url: 'https://www.facebook.com/david.bjorklund/posts/10153809692501070'
+  }, {
+    type: 'embed',
+    embedType: 'instagram',
+    id: 'tsxp1hhQTG',
+    url: 'https://instagram.com/p/tsxp1hhQTG'
+  }];
+  const oldArticleElm = renderArticle(oldItems);
+  const newArticleElm = renderArticle(newItems);
+  patchDom({oldArticleElm, newArticleElm});
+
+  t.is(oldArticleElm.innerHTML, ['<figure>',
+    '<iframe id="facebook-davidbjorklundposts10153809692501070" type="facebook" ',
+    'frameborder="0" width="100%" src="javascript:false"></iframe></figure>',
+    '<figure><iframe id="instagram-tsxp1hhQTG" type="instagram" frameborder="0" ',
+    'width="100%" src="javascript:false"></iframe>',
+    '</figure>'
+  ].join(''));
+  t.end();
+});
