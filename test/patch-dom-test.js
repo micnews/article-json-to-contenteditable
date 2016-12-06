@@ -236,7 +236,7 @@ test('patchDom() move paragraph', t => {
   t.end();
 });
 
-test('patchDom() move embed', t => {
+test('patchDom() move custom iframe embed', t => {
   const oldItems = [{
     type: 'embed',
     embedType: 'instagram',
@@ -269,6 +269,45 @@ test('patchDom() move embed', t => {
     <figure>
       <iframe id="instagram-tsxp1hhQTG" type="instagram" frameborder="0"
       width="100%" src="javascript:false"></iframe>
+    </figure>`
+  ));
+  t.end();
+});
+
+test('patchDom() move embed', t => {
+  const oldItems = [{
+    type: 'embed',
+    embedType: 'youtube',
+    url: 'https://www.youtube.com/embed/I7IdS-PbEgI',
+    youtubeId: 'I7IdS-PbEgI'
+  }, {
+    type: 'embed',
+    embedType: 'custom',
+    src: 'https://giphy.com/embed/3oxRmeLK7bjcq0CCCA',
+    secure: true
+  }];
+  const newItems = [{
+    type: 'embed',
+    embedType: 'custom',
+    src: 'https://giphy.com/embed/3oxRmeLK7bjcq0CCCA',
+    secure: true
+  }, {
+    type: 'embed',
+    embedType: 'youtube',
+    url: 'https://www.youtube.com/embed/I7IdS-PbEgI',
+    youtubeId: 'I7IdS-PbEgI'
+  }];
+  const oldArticleElm = renderArticle(oldItems);
+  const newArticleElm = renderArticle(newItems);
+  patchDom({oldArticleElm, newArticleElm});
+
+  t.is(pretty(oldArticleElm.innerHTML), pretty(
+    `<figure>
+      <iframe src="https://giphy.com/embed/3oxRmeLK7bjcq0CCCA" frameborder="0"></iframe>
+    </figure>
+    <figure>
+      <iframe src="https://www.youtube.com/embed/I7IdS-PbEgI" width="640" height="360"
+        frameborder="0" allowfullscreen="true"></iframe>
     </figure>`
   ));
   t.end();
