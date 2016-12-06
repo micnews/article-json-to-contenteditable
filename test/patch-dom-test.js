@@ -333,10 +333,10 @@ test('patchDom() add embed attribution', t => {
     embedType: 'facebook',
     url: 'https://www.facebook.com/david.bjorklund/posts/10153809692501070',
     attribution: [
-     {type: 'text', content: 'Source: '},
-     {type: 'text', content: 'author/source', href: 'http://example.com'}
-   ],
-   caption: [{type: 'text', content: 'Embed caption'}]
+      {type: 'text', content: 'Source: '},
+      {type: 'text', content: 'author/source', href: 'http://example.com'}
+    ],
+    caption: [{type: 'text', content: 'Embed caption'}]
   }];
   const oldArticleElm = renderArticle(oldItems);
   const newArticleElm = renderArticle(newItems);
@@ -360,10 +360,10 @@ test('patchDom() remove embed attribution', t => {
     embedType: 'facebook',
     url: 'https://www.facebook.com/david.bjorklund/posts/10153809692501070',
     attribution: [
-     {type: 'text', content: 'Source: '},
-     {type: 'text', content: 'author/source', href: 'http://example.com'}
-   ],
-   caption: [{type: 'text', content: 'Embed caption'}]
+      {type: 'text', content: 'Source: '},
+      {type: 'text', content: 'author/source', href: 'http://example.com'}
+    ],
+    caption: [{type: 'text', content: 'Embed caption'}]
   }];
   const newItems = [{
     type: 'embed',
@@ -389,20 +389,20 @@ test('patchDom() edit embed attribution', t => {
     embedType: 'facebook',
     url: 'https://www.facebook.com/david.bjorklund/posts/10153809692501070',
     attribution: [
-     {type: 'text', content: 'Source: '},
-     {type: 'text', content: 'author/source', href: 'http://example.com'}
-   ],
-   caption: [{type: 'text', content: 'Embed caption'}]
+      {type: 'text', content: 'Source: '},
+      {type: 'text', content: 'author/source', href: 'http://example.com'}
+    ],
+    caption: [{type: 'text', content: 'Embed caption'}]
   }];
   const newItems = [{
     type: 'embed',
     embedType: 'facebook',
     url: 'https://www.facebook.com/david.bjorklund/posts/10153809692501070',
     attribution: [
-     {type: 'text', content: 'Source: '},
-     {type: 'text', content: 'author/source', href: 'http://example-2.com'}
-   ],
-   caption: [{type: 'text', content: 'Updated embed caption'}]
+      {type: 'text', content: 'Source: '},
+      {type: 'text', content: 'author/source', href: 'http://example-2.com'}
+    ],
+    caption: [{type: 'text', content: 'Updated embed caption'}]
   }];
   const oldArticleElm = renderArticle(oldItems);
   const newArticleElm = renderArticle(newItems);
