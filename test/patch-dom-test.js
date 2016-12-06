@@ -1,4 +1,5 @@
 import _test from 'tape-catch';
+import pretty from 'pretty';
 import element from 'magic-virtual-element';
 import { render, tree } from 'deku';
 import setupArticle from 'article-json-html-render';
@@ -36,7 +37,7 @@ test('patchDom() edit paragraph', t => {
   const newArticleElm = renderArticle(newItems);
   patchDom({oldArticleElm, newArticleElm});
 
-  t.is(oldArticleElm.innerHTML, '<p>beep boop</p>');
+  t.is(pretty(oldArticleElm.innerHTML), pretty('<p>beep boop</p>'));
   t.end();
 });
 
@@ -65,7 +66,7 @@ test('patchDom() remove paragraph', t => {
   const newArticleElm = renderArticle(newItems);
   patchDom({oldArticleElm, newArticleElm});
 
-  t.is(oldArticleElm.innerHTML, '<p>boop</p>');
+  t.is(pretty(oldArticleElm.innerHTML), pretty('<p>boop</p>'));
   t.end();
 });
 
@@ -106,7 +107,7 @@ test('patchDom() insert paragraph', t => {
   const newArticleElm = renderArticle(newItems);
   patchDom({oldArticleElm, newArticleElm});
 
-  t.is(oldArticleElm.innerHTML, '<p>beep</p><p>foo</p><p>boop</p>');
+  t.is(pretty(oldArticleElm.innerHTML), pretty('<p>beep</p><p>foo</p><p>boop</p>'));
   t.end();
 });
 
@@ -130,13 +131,16 @@ test('patchDom() add embed', t => {
   const newArticleElm = renderArticle(newItems);
   patchDom({oldArticleElm, newArticleElm});
 
-  t.is(oldArticleElm.innerHTML, ['<figure>',
-    '<iframe id="facebook-davidbjorklundposts10153809692501070" type="facebook" ',
-    'frameborder="0" width="100%" src="javascript:false"></iframe></figure>',
-    '<figure><iframe id="instagram-tsxp1hhQTG" type="instagram" frameborder="0" ',
-    'width="100%" src="javascript:false"></iframe>',
-    '</figure>'
-  ].join(''));
+  t.is(pretty(oldArticleElm.innerHTML), pretty(
+    `<figure>
+      <iframe id="facebook-davidbjorklundposts10153809692501070" type="facebook"
+        frameborder="0" width="100%" src="javascript:false"></iframe>
+    </figure>
+    <figure>
+      <iframe id="instagram-tsxp1hhQTG" type="instagram" frameborder="0"
+      width="100%" src="javascript:false"></iframe>
+    </figure>`
+  ));
   t.end();
 });
 
@@ -171,14 +175,17 @@ test('patchDom() insert paragraph between embeds', t => {
   const newArticleElm = renderArticle(newItems);
   patchDom({oldArticleElm, newArticleElm});
 
-  t.is(oldArticleElm.innerHTML, ['<figure>',
-    '<iframe id="facebook-davidbjorklundposts10153809692501070" type="facebook" ',
-    'frameborder="0" width="100%" src="javascript:false"></iframe></figure>',
-    '<p>beep boop</p>',
-    '<figure><iframe id="instagram-tsxp1hhQTG" type="instagram" frameborder="0" ',
-    'width="100%" src="javascript:false"></iframe>',
-    '</figure>'
-  ].join(''));
+  t.is(pretty(oldArticleElm.innerHTML), pretty(
+    `<figure>
+      <iframe id="facebook-davidbjorklundposts10153809692501070" type="facebook"
+      frameborder="0" width="100%" src="javascript:false"></iframe>
+    </figure>
+    <p>beep boop</p>
+    <figure>
+      <iframe id="instagram-tsxp1hhQTG" type="instagram" frameborder="0"
+        width="100%" src="javascript:false"></iframe>
+    </figure>`
+  ));
   t.end();
 });
 
@@ -225,7 +232,7 @@ test('patchDom() move paragraph', t => {
   const newArticleElm = renderArticle(newItems);
   patchDom({oldArticleElm, newArticleElm});
 
-  t.is(oldArticleElm.innerHTML, '<p>boop</p><p>beep</p><p>baap</p>');
+  t.is(pretty(oldArticleElm.innerHTML), pretty('<p>boop</p><p>beep</p><p>baap</p>'));
   t.end();
 });
 
@@ -254,12 +261,15 @@ test('patchDom() move embed', t => {
   const newArticleElm = renderArticle(newItems);
   patchDom({oldArticleElm, newArticleElm});
 
-  t.is(oldArticleElm.innerHTML, ['<figure>',
-    '<iframe id="facebook-davidbjorklundposts10153809692501070" type="facebook" ',
-    'frameborder="0" width="100%" src="javascript:false"></iframe></figure>',
-    '<figure><iframe id="instagram-tsxp1hhQTG" type="instagram" frameborder="0" ',
-    'width="100%" src="javascript:false"></iframe>',
-    '</figure>'
-  ].join(''));
+  t.is(pretty(oldArticleElm.innerHTML), pretty(
+    `<figure>
+      <iframe id="facebook-davidbjorklundposts10153809692501070" type="facebook"
+      frameborder="0" width="100%" src="javascript:false"></iframe>
+    </figure>
+    <figure>
+      <iframe id="instagram-tsxp1hhQTG" type="instagram" frameborder="0"
+      width="100%" src="javascript:false"></iframe>
+    </figure>`
+  ));
   t.end();
 });
