@@ -273,3 +273,51 @@ test('patchDom() move embed', t => {
   ));
   t.end();
 });
+
+test('patchDom() formatting and move with identical paragraphs', t => {
+  const oldItems = [{
+    type: 'paragraph',
+    children: [{
+      type: 'text',
+      content: 'beep'
+    }]
+  }, {
+    type: 'paragraph',
+    children: [{
+      type: 'text',
+      content: 'boop'
+    }]
+  }, {
+    type: 'paragraph',
+    children: [{
+      type: 'text',
+      content: 'beep'
+    }]
+  }];
+  const newItems = [{
+    type: 'paragraph',
+    children: [{
+      type: 'text',
+      content: 'beep',
+      bold: true
+    }]
+  }, {
+    type: 'paragraph',
+    children: [{
+      type: 'text',
+      content: 'beep'
+    }]
+  }, {
+    type: 'paragraph',
+    children: [{
+      type: 'text',
+      content: 'boop'
+    }]
+  }];
+  const oldArticleElm = renderArticle(oldItems);
+  const newArticleElm = renderArticle(newItems);
+  patchDom({oldArticleElm, newArticleElm});
+
+  t.is(pretty(oldArticleElm.innerHTML), pretty('<p><b>beep</b></p><p>beep</p><p>boop</p>'));
+  t.end();
+});
