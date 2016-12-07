@@ -19,6 +19,14 @@ test('<ArticleJsonToContenteditable />', t => {
   t.end();
 });
 
+test('<ArticleJsonToContenteditable contenteditable=false />', t => {
+  const expected = renderString(tree(<article contenteditable='false'></article>));
+  const actual = renderString(tree(<ArticleJsonToContenteditable contenteditable='false' items={[]} />));
+
+  t.equal(actual, expected);
+  t.end();
+});
+
 function keydown (opts) {
   return createEvent('keydown', opts);
 }
