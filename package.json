@@ -1,6 +1,6 @@
 {
   "name": "article-json-to-contenteditable",
-  "version": "7.2.1",
+  "version": "7.3.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
