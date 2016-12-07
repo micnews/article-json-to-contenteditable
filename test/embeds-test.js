@@ -22,9 +22,9 @@ const fixtures = {
 const test = process.browser ? _test : function () {};
 
 test('FacebookEmbed - body', t => {
-  const actual = renderString(tree(<FacebookEmbed embedAs='post' id='123' />));
+  const actual = renderString(tree(<FacebookEmbed embedAs='post' url='https://www.facebook.com/micmedia/posts/1306645779358209' />));
   const expected = renderString(tree(
-    <iframe id='facebook-123' type='facebook' frameBorder='0' width='100%' src='javascript:false'></iframe>));
+    <iframe id='facebook-micmediaposts1306645779358209' type='facebook' frameBorder='0' width='100%' src='javascript:false'></iframe>));
   t.equal(actual, expected);
   t.end();
 });
@@ -214,7 +214,7 @@ test('loadEmbed()', t => {
 test('TumblrEmbed - body', t => {
   const actual = renderString(tree(<TumblrEmbed id='153824541111' url='https://embed.tumblr.com/embed/post/xlBeooAJ19N2jNN7Y_z92A/153824541111' />));
   const expected = renderString(tree(
-    <iframe id='tumblr-153824541111' type='tumblr' frameBorder='0' width='100%' src='javascript:false'></iframe>));
+    <iframe id='tumblr-embedpostxlBeooAJ19N2jNN7Y_z92A153824541111' type='tumblr' frameBorder='0' width='100%' src='javascript:false'></iframe>));
   t.equal(actual, expected);
   t.end();
 });

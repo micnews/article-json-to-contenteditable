@@ -35,6 +35,7 @@
     "create-event": "^1.0.9",
     "electron-prebuilt": "^0.37.7",
     "faucet": "0.0.1",
+    "pretty": "^1.0.0",
     "semistandard-deku": "github:micnews/semistandard#deku",
     "snazzy": "^5.0.0",
     "tape": "^4.5.1",
@@ -44,6 +45,7 @@
   "dependencies": {
     "article-json-html-render": "^2.5.0",
     "deku": "^1.0.0",
+    "dift": "^0.1.12",
     "embeds": "^2.5.1",
     "get-selection-range-from-elm": "^2.0.1",
     "html-to-article-json": "^1.12.4",
@@ -53,7 +55,6 @@
     "is-url": "^1.2.1",
     "keycode": "^2.1.1",
     "magic-virtual-element": "^1.0.6",
-    "morphdom": "^2.0.0",
     "object-assign": "^4.1.0",
     "save-selection": "^2.0.0"
   }

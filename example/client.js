@@ -6,7 +6,7 @@ const Article = setupArticle();
 const container = document.querySelector('#editor');
 
 const items = [{
-  'type': 'paragraph',
+  'type': 'header1',
   'children': [{
     'type': 'text',
     'content': 'Text text text',
@@ -42,6 +42,17 @@ const items = [{
   'caption': [],
   'id': 'iHTTDHz6Z2v',
   'url': 'https://vine.co/v/iHTTDHz6Z2v/embed/simple'
+}, {
+  'type': 'header1',
+  'children': [{
+    'type': 'text',
+    'content': 'Text text text',
+    'href': null,
+    'italic': false,
+    'bold': false,
+    'mark': false,
+    'markClass': null
+  }]
 }, {
   'type': 'embed',
   'embedType': 'youtube',
