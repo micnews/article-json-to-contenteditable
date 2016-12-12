@@ -65,10 +65,14 @@ test('FacebookEmbed onResize', t => {
   };
 
   const el = document.body.appendChild(document.createElement('div'));
-  const expectedHeight = 150;
+  const expectedHeight = 522;
   const onResize = ({height}) => {
-    t.equal(height, expectedHeight);
-    t.end();
+    // Timeout needed for the assertion to not be caught inside iframe,
+    // ie - to get actual errormessages when they fail.
+    setTimeout(() => {
+      t.equal(height, expectedHeight);
+      t.end();
+    }, 0);
   };
   render(tree(<FacebookEmbed {...opts} onResize={onResize} />), el);
 });
@@ -116,8 +120,12 @@ test('InstagramEmbed - onResize', t => {
   const el = document.body.appendChild(document.createElement('div'));
   const expectedHeight = 754;
   const onResize = ({height}) => {
-    t.equal(height, expectedHeight);
-    t.end();
+    // Timeout needed for the assertion to not be caught inside iframe,
+    // ie - to get actual errormessages when they fail.
+    setTimeout(() => {
+      t.equal(height, expectedHeight);
+      t.end();
+    }, 0);
   };
   render(tree(<InstagramEmbed {...opts} onResize={onResize} />), el);
 });
@@ -176,8 +184,12 @@ test('TwitterEmbed - onResize', t => {
 
   const el = document.body.appendChild(document.createElement('div'));
   const onResize = ({height}) => {
-    t.ok(height > 0);
-    t.end();
+    // Timeout needed for the assertion to not be caught inside iframe,
+    // ie - to get actual errormessages when they fail.
+    setTimeout(() => {
+      t.ok(height > 0);
+      t.end();
+    }, 0);
   };
   render(tree(<TwitterEmbed {...opts} onResize={onResize} />), el);
 });
@@ -244,8 +256,12 @@ test('TumblrEmbed - onResize', t => {
   };
   const el = document.body.appendChild(document.createElement('div'));
   const onResize = ({height}) => {
-    t.ok(height > 0);
-    t.end();
+    // Timeout needed for the assertion to not be caught inside iframe,
+    // ie - to get actual errormessages when they fail.
+    setTimeout(() => {
+      t.ok(height > 0);
+      t.end();
+    }, 0);
   };
   render(tree(<TumblrEmbed {...opts} onResize={onResize} />), el);
 });
