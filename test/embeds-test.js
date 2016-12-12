@@ -67,6 +67,8 @@ test('FacebookEmbed onResize', t => {
   const el = document.body.appendChild(document.createElement('div'));
   const expectedHeight = 522;
   const onResize = ({height}) => {
+    // Timeout needed for the assertion to not be caught inside iframe,
+    // ie - to get actual errormessages when they fail.
     setTimeout(() => {
       t.equal(height, expectedHeight);
       t.end();
@@ -118,6 +120,8 @@ test('InstagramEmbed - onResize', t => {
   const el = document.body.appendChild(document.createElement('div'));
   const expectedHeight = 754;
   const onResize = ({height}) => {
+    // Timeout needed for the assertion to not be caught inside iframe,
+    // ie - to get actual errormessages when they fail.
     setTimeout(() => {
       t.equal(height, expectedHeight);
       t.end();
@@ -180,6 +184,8 @@ test('TwitterEmbed - onResize', t => {
 
   const el = document.body.appendChild(document.createElement('div'));
   const onResize = ({height}) => {
+    // Timeout needed for the assertion to not be caught inside iframe,
+    // ie - to get actual errormessages when they fail.
     setTimeout(() => {
       t.ok(height > 0);
       t.end();
@@ -250,6 +256,8 @@ test('TumblrEmbed - onResize', t => {
   };
   const el = document.body.appendChild(document.createElement('div'));
   const onResize = ({height}) => {
+    // Timeout needed for the assertion to not be caught inside iframe,
+    // ie - to get actual errormessages when they fail.
     setTimeout(() => {
       t.ok(height > 0);
       t.end();
