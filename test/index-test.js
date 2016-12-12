@@ -119,7 +119,8 @@ if (process.browser) {
 
     const app = tree(<ArticleJsonToContenteditable items={[]} onUpdate={onUpdate}/>);
     const container = renderAppInContainer(app);
-    container.querySelector('article').dispatchEvent(keydown({ key: 'Dead' }));
+    const keydownEvent = new window.KeyboardEvent('keydown', { key: 'Dead' });
+    container.querySelector('article').dispatchEvent(keydownEvent);
     t.notOk(onUpdateCalled, 'onUpdate was not called');
     process.nextTick(() => {
       t.notOk(onUpdateCalled, 'onUpdate was not called');
