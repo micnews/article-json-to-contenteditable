@@ -65,10 +65,12 @@ test('FacebookEmbed onResize', t => {
   };
 
   const el = document.body.appendChild(document.createElement('div'));
-  const expectedHeight = 150;
+  const expectedHeight = 522;
   const onResize = ({height}) => {
-    t.equal(height, expectedHeight);
-    t.end();
+    setTimeout(() => {
+      t.equal(height, expectedHeight);
+      t.end();
+    }, 0);
   };
   render(tree(<FacebookEmbed {...opts} onResize={onResize} />), el);
 });
