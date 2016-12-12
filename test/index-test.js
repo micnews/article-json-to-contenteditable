@@ -108,6 +108,25 @@ if (process.browser) {
     });
   });
 
+  test('<ArticleJsonToContenteditable onUpdate keydown w dead key', t => {
+    let onUpdateCalled = false;
+
+    function onUpdate ({items, selectionBoundingClientRect}) {
+      onUpdateCalled = true;
+      t.ok(Array.isArray(items), 'items is an Array');
+      t.equal(selectionBoundingClientRect, null, 'selectionBoundingClientRect is null');
+    }
+
+    const app = tree(<ArticleJsonToContenteditable items={[]} onUpdate={onUpdate}/>);
+    const container = renderAppInContainer(app);
+    container.querySelector('article').dispatchEvent(keydown({ key: 'Dead' }));
+    t.notOk(onUpdateCalled, 'onUpdate was not called');
+    process.nextTick(() => {
+      t.notOk(onUpdateCalled, 'onUpdate was not called');
+      t.end();
+    });
+  });
+
   test('<ArticleJsonToContenteditable onUpdate mouseup command', t => {
     let onUpdateCalled = false;
 
