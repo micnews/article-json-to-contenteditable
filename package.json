@@ -42,7 +42,7 @@
     "tape-run": "^2.1.4"
   },
   "dependencies": {
-    "article-json-html-render": "^2.5.0",
+    "article-json-html-render": "^2.6.0",
     "deku": "^1.0.0",
     "dift": "^0.1.12",
     "embeds": "^2.5.1",
