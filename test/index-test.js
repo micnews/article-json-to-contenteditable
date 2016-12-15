@@ -596,9 +596,65 @@ if (process.browser) {
     }];
     const app = tree(<ArticleJsonToContenteditable items={items} onUpdate={onUpdate}/>);
     const container = renderAppInContainer(app);
-    const firstParagraph = container.querySelector('article p');
     const newParagraph = document.createElement('p');
     newParagraph.innerHTML = 'https://www.facebook.com/MicMedia/videos/1318391108183676';
+    container.querySelector('article').appendChild(newParagraph);
+
+    let onUpdateCalled = false;
+
+    function onUpdate ({items: actual}) {
+      onUpdateCalled = true;
+      t.deepEqual(actual, expected);
+    }
+
+    container.querySelector('article').dispatchEvent(mouseup());
+    t.ok(onUpdateCalled, 'onUpdate was called');
+    t.end();
+  });
+
+  test('<ArticleJsonToContenteditable /> add url to parse to embed', t => {
+    const items = [{
+      type: 'paragraph',
+      children: [{
+        bold: false,
+        content: 'Text',
+        href: null,
+        italic: false,
+        mark: false,
+        markClass: null,
+        strikethrough: false,
+        type: 'text'
+      }]
+    }];
+    const expected = [{
+      type: 'paragraph',
+      children: [{
+        bold: false,
+        content: 'Text',
+        href: null,
+        italic: false,
+        mark: false,
+        markClass: null,
+        strikethrough: false,
+        type: 'text'
+      }]
+    }, {
+      type: 'paragraph',
+      children: [{
+        bold: false,
+        content: 'notavalidprotocolhttps://www.facebook.com/MicMedia/videos/1318391108183676',
+        href: null,
+        italic: false,
+        mark: false,
+        markClass: null,
+        strikethrough: false,
+        type: 'text'
+      }]
+    }];
+    const app = tree(<ArticleJsonToContenteditable items={items} onUpdate={onUpdate}/>);
+    const container = renderAppInContainer(app);
+    const newParagraph = document.createElement('p');
+    newParagraph.innerHTML = 'notavalidprotocolhttps://www.facebook.com/MicMedia/videos/1318391108183676';
     container.querySelector('article').appendChild(newParagraph);
 
     let onUpdateCalled = false;
