@@ -39,7 +39,7 @@
     "snazzy": "^5.0.0",
     "tape": "^4.5.1",
     "tape-catch": "^1.0.5",
-    "tape-run": "^2.1.4"
+    "tape-run": "^3.0.0"
   },
   "dependencies": {
     "article-json-html-render": "^2.5.0",
