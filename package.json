@@ -36,7 +36,7 @@
     "faucet": "0.0.1",
     "pretty": "^1.0.0",
     "semistandard-deku": "github:micnews/semistandard#deku",
-    "snazzy": "^5.0.0",
+    "snazzy": "^7.0.0",
     "tape": "^4.5.1",
     "tape-catch": "^1.0.5",
     "tape-run": "^2.1.4"
