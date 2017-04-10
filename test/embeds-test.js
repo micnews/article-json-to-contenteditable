@@ -1,4 +1,4 @@
-import _test from 'tape-catch';
+import _test from './helpers/test-runner';
 import FacebookEmbed from '../lib/embeds/facebook';
 import InstagramEmbed from '../lib/embeds/instagram';
 import TwitterEmbed from '../lib/embeds/twitter';

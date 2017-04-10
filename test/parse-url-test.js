@@ -1,4 +1,4 @@
-import test from 'tape-catch';
+import test from './helpers/test-runner';
 import parseUrl from '../lib/parse-url';
 import {parseInput as parseEmbeds} from 'embeds';
 import objectAssign from 'object-assign';

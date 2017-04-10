@@ -1,4 +1,4 @@
-import _test from 'tape-catch';
+import _test from './helpers/test-runner';
 import pretty from 'pretty';
 import element from 'magic-virtual-element';
 import { render, tree } from 'deku';
