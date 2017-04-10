@@ -7,7 +7,7 @@
     "example": "beefy example/client.js --index example/index.html --open -- --transform babelify",
     "lint": "semistandard | snazzy",
     "test:node": "babel-tape-runner test/*-test.js",
-    "test:browser": "browserify -t babelify -t brfs -d test/*-test.js | tape-run | faucet",
+    "test:browser": "browserify -t babelify -t brfs -d test/*-test.js | devtool -c -h --bf --no-nt | faucet",
     "test": "npm run test:node && npm run test:browser && npm run lint",
     "build": "babel lib --out-dir dist",
     "watch": "babel lib --out-dir dist --watch",
@@ -33,13 +33,13 @@
     "brfs": "^1.4.3",
     "browserify": "^13.0.0",
     "create-event": "^1.0.9",
+    "devtool": "^2.3.1",
     "faucet": "0.0.1",
     "pretty": "^1.0.0",
     "semistandard-deku": "github:micnews/semistandard#deku",
     "snazzy": "^5.0.0",
     "tape": "^4.5.1",
-    "tape-catch": "^1.0.5",
-    "tape-run": "^2.1.4"
+    "tape-catch": "^1.0.5"
   },
   "dependencies": {
     "article-json-html-render": "^2.5.0",

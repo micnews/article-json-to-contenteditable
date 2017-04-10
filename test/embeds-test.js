@@ -65,7 +65,7 @@ test('FacebookEmbed onResize', t => {
   };
 
   const el = document.body.appendChild(document.createElement('div'));
-  const expectedHeight = 522;
+  const expectedHeight = 150;
   const onResize = ({height}) => {
     // Timeout needed for the assertion to not be caught inside iframe,
     // ie - to get actual errormessages when they fail.
@@ -118,7 +118,7 @@ test('InstagramEmbed - onResize', t => {
   };
 
   const el = document.body.appendChild(document.createElement('div'));
-  const expectedHeight = 754;
+  const expectedHeight = 150;
   const onResize = ({height}) => {
     // Timeout needed for the assertion to not be caught inside iframe,
     // ie - to get actual errormessages when they fail.
