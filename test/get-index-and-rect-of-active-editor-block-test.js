@@ -1,4 +1,4 @@
-import _test from 'tape-catch';
+import _test from './helpers/test-runner';
 const test = process.browser ? _test : function () {};
 import getIndexAndRectOfActiveEditorBlock from '../lib/get-index-and-rect-of-active-editor-block';
 import setCaret from './helpers/set-caret';

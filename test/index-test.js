@@ -1,6 +1,6 @@
 /* eslint-disable deku/no-unknown-property */
 
-import test from 'tape-catch';
+import test from './helpers/test-runner';
 import element from 'magic-virtual-element';
 import { renderString, render, tree } from 'deku';
 import createEvent from 'create-event';
