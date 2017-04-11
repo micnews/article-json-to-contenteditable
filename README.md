@@ -9,59 +9,76 @@ npm install article-json-to-contenteditable --save
 ```
 ## Example
 ```js
-import {render, tree} from 'deku';
+import React, { Component } from 'react';
+import { render } from 'react-dom';
+
 import setupArticle from '../lib';
-import element from 'magic-virtual-element';
 
 const Article = setupArticle();
+
+class App extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      items: [
+        {
+          type: 'paragraph',
+          children: [{
+            type: 'text',
+            content: 'Text text text',
+            href: null,
+            italic: false,
+            bold: false,
+            mark: false,
+            markClass: null
+          }]
+        }, {
+          type: 'embed',
+          embedType: 'facebook',
+          url: 'https://www.facebook.com/david.bjorklund/posts/10153809692501070',
+          embedAs: 'post',
+          date: 'Thursday, January 21, 2016',
+          user: 'David Pop Hipsterson',
+          text: [{
+            content: 'Hey! So, for the last few weeks I\'ve worked on http://mic.com/ - the new home for mic.com (on desktop) - please take a look :)',
+            href: null
+          }]
+        }
+      ]
+    }
+    this.onUpdate = this.onUpdate.bind(this);
+    this.getCustomKeyDown = this.getCustomKeyDown.bind(this);
+  }
+
+  this.onUpdate({items, selectionBoundingClientRect, activeItem}) {
+    console.log('in client.js onUpdate');
+    console.log('selectionBoundingClientRect:', selectionBoundingClientRect);
+    console.log('activeItem:', activeItem);
+    this.setState({ items });
+  }
+
+  this.getCustomKeyDown(e) {
+    // Return method(s) to handle any keydown events you want custom
+    // handling for, like undo/redo etc.
+    const zKeyCode = 90;
+    if (e.metaKey && e.keyCode === zKeyCode) {
+      return function handleUndoRedo () {
+        console.log('should undo/redo');
+      };
+    }
+  }
+
+  render() (
+    <Article
+      items={this.state.items}
+      onUpdate={this.onUpdate}
+      getCustomKeyDown={this.getCustomKeyDown}
+    />
+  )
+}
+
 const container = document.querySelector('#editor');
-
-const items = [
-  {
-    type: 'paragraph',
-    children: [{
-      type: 'text',
-      content: 'Text text text',
-      href: null,
-      italic: false,
-      bold: false,
-      mark: false,
-      markClass: null
-    }]
-  }, {
-    type: 'embed',
-    embedType: 'facebook',
-    url: 'https://www.facebook.com/david.bjorklund/posts/10153809692501070',
-    embedAs: 'post',
-    date: 'Thursday, January 21, 2016',
-    user: 'David Pop Hipsterson',
-    text: [{
-      content: 'Hey!So, for the last few weeks I\'ve worked on http://mic.com/ - the new home for mic.com (on desktop) - please take a look :)',
-      href: null
-    }]
-  }
-];
-
-const getCustomKeyDown = (e) => {
-  // Return method(s) to handle any keydown events you want custom
-  // handling for, like undo/redo etc.
-  const zKeyCode = 90;
-  if (e.metaKey && e.keyCode === zKeyCode) {
-    return function handleUndoRedo () {
-      console.log('should undo/redo');
-    };
-  }
-};
-
-const onUpdate = ({items, selectionBoundingClientRect, activeItem}) => {
-  console.log('in client.js onUpdate');
-  console.log('selectionBoundingClientRect:', selectionBoundingClientRect);
-  console.log('activeItem:', activeItem);
-  app.mount(<Article items={items} onUpdate={onUpdate} getCustomKeyDown={getCustomKeyDown} />);
-};
-
-const app = tree(<Article items={items} onUpdate={onUpdate} getCustomKeyDown={getCustomKeyDown} />);
-
 render(app, container);
 
 ```
