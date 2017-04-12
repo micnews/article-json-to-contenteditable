@@ -1,12 +1,13 @@
-import _test from './helpers/test-runner';
 import React from 'react';
 import pretty from 'pretty';
-import { render, tree } from 'deku';
-import setupArticle from 'article-json-html-render';
+import { mount } from 'enzyme';
+import setupArticle from 'article-json-react-render';
+
+import _test from './helpers/test-runner';
 import patchDom from '../lib/patch-dom';
 import embeds from '../lib/embeds';
 
-const test = process.browser ? _test : function () {};
+const test = process.browser ? _test : () => {};
 const Article = setupArticle({
   embeds,
   renderEmptyTextNodes: true,
@@ -14,7 +15,7 @@ const Article = setupArticle({
 
 const renderArticle = (items) => {
   const container = document.createElement('div');
-  render(tree(<Article items={items} />), container);
+  mount(<Article items={items} />, container);
   return container.querySelector('article');
 };
 

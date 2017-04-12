@@ -46,7 +46,7 @@
     "tape-catch": "^1.0.5"
   },
   "dependencies": {
-    "article-json-html-render": "^2.5.0",
+    "article-json-react-render": "0.0.1",
     "dift": "^0.1.12",
     "embeds": "^2.5.1",
     "get-selection-range-from-elm": "^2.0.1",

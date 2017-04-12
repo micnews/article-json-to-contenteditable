@@ -1,27 +1,30 @@
 /* eslint-disable deku/no-unknown-property */
 
-import test from './helpers/test-runner';
 import React from 'react';
-import { renderString, render, tree } from 'deku';
 import createEvent from 'create-event';
+import parseKeyCode from 'keycode';
+import { shallow, mount } from 'enzyme';
+
+import test from './helpers/test-runner';
 import setupArticleJsonToContenteditable from '../lib/index';
 import setCaret from './helpers/set-caret';
 import setSelection from './helpers/set-selection';
-import parseKeyCode from 'keycode';
+
+const renderString = jsx => shallow(jsx).html();
 
 const ArticleJsonToContenteditable = setupArticleJsonToContenteditable();
 
 test('<ArticleJsonToContenteditable />', (t) => {
-  const expected = renderString(tree(<article contentEditable='true' />));
-  const actual = renderString(tree(<ArticleJsonToContenteditable items={[]} />));
+  const expected = renderString(<article contentEditable='true' />);
+  const actual = renderString(<ArticleJsonToContenteditable items={[]} />);
 
   t.equal(actual, expected);
   t.end();
 });
 
 test('<ArticleJsonToContenteditable contenteditable=false />', (t) => {
-  const expected = renderString(tree(<article contentEditable='false' />));
-  const actual = renderString(tree(<ArticleJsonToContenteditable contenteditable='false' items={[]} />));
+  const expected = renderString(<article contentEditable='false' />);
+  const actual = renderString(<ArticleJsonToContenteditable contenteditable='false' items={[]} />);
 
   t.equal(actual, expected);
   t.end();
@@ -42,7 +45,7 @@ function renderAppInContainer(app) {
   }
 
   const container = document.body.appendChild(document.createElement('div'));
-  render(app, container);
+  mount(app, container);
   previousApp = app;
   return container;
 }
@@ -74,14 +77,14 @@ if (process.browser) {
       },
     ];
 
-    const expected = renderString(tree(
+    const expected = renderString(
       <article contentEditable='true'>
         <p>Text text text</p>
         <figure contentEditable='false'>
           <iframe id='instagram-tsxp1hhQTG' type='instagram' frameBorder='0' width='100%' src='javascript:false' />
         </figure>
-      </article>));
-    const app = tree(<ArticleJsonToContenteditable items={items} />);
+      </article>);
+    const app = <ArticleJsonToContenteditable items={items} />;
     const container = renderAppInContainer(app);
     const actual = container.innerHTML;
 
@@ -98,7 +101,7 @@ if (process.browser) {
       t.equal(selectionBoundingClientRect, null, 'selectionBoundingClientRect is null');
     }
 
-    const app = tree(<ArticleJsonToContenteditable items={[]} onUpdate={onUpdate} />);
+    const app = <ArticleJsonToContenteditable items={[]} onUpdate={onUpdate} />;
     const container = renderAppInContainer(app);
     container.querySelector('article').dispatchEvent(keydown({ key: 'a' }));
     t.notOk(onUpdateCalled, 'onUpdate was not called');
@@ -117,7 +120,7 @@ if (process.browser) {
       t.equal(selectionBoundingClientRect, null, 'selectionBoundingClientRect is null');
     }
 
-    const app = tree(<ArticleJsonToContenteditable items={[]} onUpdate={onUpdate} />);
+    const app = <ArticleJsonToContenteditable items={[]} onUpdate={onUpdate} />;
     const container = renderAppInContainer(app);
     const keydownEvent = new window.KeyboardEvent('keydown', { key: 'Dead' });
     container.querySelector('article').dispatchEvent(keydownEvent);
@@ -137,7 +140,7 @@ if (process.browser) {
       t.equal(selectionBoundingClientRect, null, 'selectionBoundingClientRect is null');
     }
 
-    const app = tree(<ArticleJsonToContenteditable items={[]} onUpdate={onUpdate} />);
+    const app = <ArticleJsonToContenteditable items={[]} onUpdate={onUpdate} />;
     const container = renderAppInContainer(app);
     container.querySelector('article').dispatchEvent(mouseup());
     process.nextTick(() => {
@@ -168,7 +171,7 @@ if (process.browser) {
       t.equal(activeItem, undefined, 'selectionBoundingClientRect is undefined');
     }
 
-    const app = tree(<ArticleJsonToContenteditable items={[]} onUpdate={onUpdate} />);
+    const app = <ArticleJsonToContenteditable items={[]} onUpdate={onUpdate} />;
     const container = renderAppInContainer(app);
     container.querySelector('article').dispatchEvent(new window.Event('blur'));
     t.ok(onUpdateCalled, 'onUpdate was called');
@@ -192,20 +195,22 @@ if (process.browser) {
         markClass: null,
       }],
     }];
-    const app = tree(<ArticleJsonToContenteditable items={items} onUpdate={onUpdate} />);
-    const container = renderAppInContainer(app);
-    const firstParagraph = container.querySelector('article p');
 
-    const expected = {
-      index: 0,
-      boundingClientRect: firstParagraph.getBoundingClientRect(),
-    };
+    let expected;
     let onUpdateCalled = false;
-
     function onUpdate({ activeItem }) {
       onUpdateCalled = true;
       t.deepEqual(activeItem, expected);
     }
+
+    const app = <ArticleJsonToContenteditable items={items} onUpdate={onUpdate} />;
+    const container = renderAppInContainer(app);
+    const firstParagraph = container.querySelector('article p');
+
+    expected = {
+      index: 0,
+      boundingClientRect: firstParagraph.getBoundingClientRect(),
+    };
 
     setCaret(firstParagraph, 0);
     container.querySelector('article').dispatchEvent(mouseup());
@@ -218,18 +223,16 @@ if (process.browser) {
     let updateCalled = false;
 
     function getCustomKeyDown(e) {
-      if (e.metaKey && parseKeyCode(e.keyCode) === 's') {
-        return () => {
-          customKeyDownCalled = true;
-        };
-      }
+      return () => {
+        customKeyDownCalled = e.metaKey && parseKeyCode(e.keyCode) === 's';
+      };
     }
 
     function onUpdate() {
       updateCalled = true;
     }
 
-    const app = tree(<ArticleJsonToContenteditable
+    const app = (<ArticleJsonToContenteditable
       items={[]}
       onUpdate={onUpdate}
       getCustomKeyDown={getCustomKeyDown}
@@ -329,15 +332,17 @@ if (process.browser) {
         markClass: 'selection-end',
       }],
     }];
-    const app = tree(<ArticleJsonToContenteditable items={initialItems} onUpdate={onUpdate} />);
-    const container = renderAppInContainer(app);
-    const secondParagraph = container.querySelectorAll('article p')[1];
+
     let onUpdateCalled = false;
 
     function onUpdate({ items }) {
       onUpdateCalled = true;
       t.deepEqual(items, expected);
     }
+
+    const app = <ArticleJsonToContenteditable items={initialItems} onUpdate={onUpdate} />;
+    const container = renderAppInContainer(app);
+    const secondParagraph = container.querySelectorAll('article p')[1];
 
     setSelection(secondParagraph, 0, secondParagraph, 1);
     container.querySelector('article').dispatchEvent(mouseup());
@@ -411,15 +416,17 @@ if (process.browser) {
         markClass: null,
       }],
     }];
-    const app = tree(<ArticleJsonToContenteditable items={initialItems} onUpdate={onUpdate} />);
-    const container = renderAppInContainer(app);
-    const secondParagraph = container.querySelectorAll('article p')[1];
+
     let onUpdateCalled = false;
 
     function onUpdate({ items }) {
       onUpdateCalled = true;
       t.deepEqual(items, expected);
     }
+
+    const app = <ArticleJsonToContenteditable items={initialItems} onUpdate={onUpdate} />;
+    const container = renderAppInContainer(app);
+    const secondParagraph = container.querySelectorAll('article p')[1];
 
     setSelection(secondParagraph, 0, secondParagraph, 1);
     container.querySelector('article').dispatchEvent(new window.Event('blur'));
@@ -472,16 +479,20 @@ if (process.browser) {
         markClass: null,
       }],
     }];
+
     const expected = items;
-    const app = tree(<ArticleJsonToContenteditable items={items} onUpdate={onUpdate} selections={false} />);
+
+    let onUpdateCalled = false;
+    function onUpdate({ updateItems }) {
+      onUpdateCalled = true;
+      t.deepEqual(updateItems, expected, 'Should not have updated selections');
+    }
+
+    const app = (
+      <ArticleJsonToContenteditable items={items} onUpdate={onUpdate} selections={false} />
+    );
     const container = renderAppInContainer(app);
     const secondParagraph = container.querySelectorAll('article p')[1];
-    let onUpdateCalled = false;
-
-    function onUpdate({ items }) {
-      onUpdateCalled = true;
-      t.deepEqual(items, expected, 'Should not have updated selections');
-    }
 
     setSelection(secondParagraph, 0, secondParagraph, 1);
     container.querySelector('article').dispatchEvent(mouseup());
@@ -498,7 +509,7 @@ if (process.browser) {
       t.equal(selectionBoundingClientRect, null, 'selectionBoundingClientRect is null');
     }
 
-    const app = tree(<ArticleJsonToContenteditable items={[]} onUpdate={onUpdate} />);
+    const app = <ArticleJsonToContenteditable items={[]} onUpdate={onUpdate} />;
     const container = renderAppInContainer(app);
     container.querySelector('article').dispatchEvent(keydown({ meta: true, key: 'v' }));
     t.notOk(onUpdateCalled, 'onUpdate was not called for metaKey + v');
@@ -525,7 +536,7 @@ if (process.browser) {
       t.equal(selectionBoundingClientRect, null, 'selectionBoundingClientRect is null');
     }
 
-    const app = tree(<ArticleJsonToContenteditable items={[]} onUpdate={onUpdate} />);
+    const app = <ArticleJsonToContenteditable items={[]} onUpdate={onUpdate} />;
     const container = renderAppInContainer(app);
     container.querySelector('article').dispatchEvent(keydown({ meta: true, key: 'x' }));
     t.notOk(onUpdateCalled, 'onUpdate was not called for metaKey + x');
@@ -552,7 +563,7 @@ if (process.browser) {
         class: 'beep-boop',
       },
     }];
-    const app = tree(<ArticleJsonToContenteditable items={items} />);
+    const app = <ArticleJsonToContenteditable items={items} />;
     const container = renderAppInContainer(app);
     const actual = container.querySelector('figure').className;
     const expected = 'beep-boop';
@@ -594,11 +605,6 @@ if (process.browser) {
       embedAs: 'video',
       user: 'MicMedia',
     }];
-    const app = tree(<ArticleJsonToContenteditable items={items} onUpdate={onUpdate} />);
-    const container = renderAppInContainer(app);
-    const newParagraph = document.createElement('p');
-    newParagraph.innerHTML = 'https://www.facebook.com/MicMedia/videos/1318391108183676';
-    container.querySelector('article').appendChild(newParagraph);
 
     let onUpdateCalled = false;
 
@@ -606,6 +612,12 @@ if (process.browser) {
       onUpdateCalled = true;
       t.deepEqual(actual, expected);
     }
+
+    const app = <ArticleJsonToContenteditable items={items} onUpdate={onUpdate} />;
+    const container = renderAppInContainer(app);
+    const newParagraph = document.createElement('p');
+    newParagraph.innerHTML = 'https://www.facebook.com/MicMedia/videos/1318391108183676';
+    container.querySelector('article').appendChild(newParagraph);
 
     container.querySelector('article').dispatchEvent(mouseup());
     t.ok(onUpdateCalled, 'onUpdate was called');
@@ -651,11 +663,6 @@ if (process.browser) {
         type: 'text',
       }],
     }];
-    const app = tree(<ArticleJsonToContenteditable items={items} onUpdate={onUpdate} />);
-    const container = renderAppInContainer(app);
-    const newParagraph = document.createElement('p');
-    newParagraph.innerHTML = 'notavalidprotocolhttps://www.facebook.com/MicMedia/videos/1318391108183676';
-    container.querySelector('article').appendChild(newParagraph);
 
     let onUpdateCalled = false;
 
@@ -663,6 +670,12 @@ if (process.browser) {
       onUpdateCalled = true;
       t.deepEqual(actual, expected);
     }
+
+    const app = <ArticleJsonToContenteditable items={items} onUpdate={onUpdate} />;
+    const container = renderAppInContainer(app);
+    const newParagraph = document.createElement('p');
+    newParagraph.innerHTML = 'notavalidprotocolhttps://www.facebook.com/MicMedia/videos/1318391108183676';
+    container.querySelector('article').appendChild(newParagraph);
 
     container.querySelector('article').dispatchEvent(mouseup());
     t.ok(onUpdateCalled, 'onUpdate was called');
