@@ -47,18 +47,19 @@ class App extends Component {
         }
       ]
     }
+
     this.onUpdate = this.onUpdate.bind(this);
     this.getCustomKeyDown = this.getCustomKeyDown.bind(this);
   }
 
-  this.onUpdate({items, selectionBoundingClientRect, activeItem}) {
+  onUpdate({items, selectionBoundingClientRect, activeItem}) {
     console.log('in client.js onUpdate');
     console.log('selectionBoundingClientRect:', selectionBoundingClientRect);
     console.log('activeItem:', activeItem);
     this.setState({ items });
   }
 
-  this.getCustomKeyDown(e) {
+  getCustomKeyDown(e) {
     // Return method(s) to handle any keydown events you want custom
     // handling for, like undo/redo etc.
     const zKeyCode = 90;
@@ -69,13 +70,13 @@ class App extends Component {
     }
   }
 
-  render() (
-    <Article
+  render() {
+    return (<Article
       items={this.state.items}
       onUpdate={this.onUpdate}
       getCustomKeyDown={this.getCustomKeyDown}
-    />
-  )
+    />);
+  }
 }
 
 const container = document.querySelector('#editor');

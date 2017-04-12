@@ -1,3 +1,5 @@
+/* eslint-disable no-script-url, import/no-extraneous-dependencies */
+
 import fs from 'fs';
 import React from 'react';
 import { shallow, mount } from 'enzyme';

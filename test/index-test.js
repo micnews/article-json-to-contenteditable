@@ -1,4 +1,4 @@
-/* eslint-disable deku/no-unknown-property */
+/* eslint-disable no-script-url, import/no-extraneous-dependencies */
 
 import React from 'react';
 import createEvent from 'create-event';
