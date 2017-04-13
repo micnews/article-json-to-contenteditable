@@ -15,16 +15,16 @@ const renderString = jsx => shallow(jsx).html();
 const ArticleJsonToContenteditable = setupArticleJsonToContenteditable();
 
 test('<ArticleJsonToContenteditable />', (t) => {
-  const expected = renderString(<article contentEditable='true' />);
+  const expected = renderString(<div><article contentEditable='true' /></div>);
   const actual = renderString(<ArticleJsonToContenteditable items={[]} />);
 
   t.equal(actual, expected);
   t.end();
 });
 
-test('<ArticleJsonToContenteditable contenteditable=false />', (t) => {
-  const expected = renderString(<article contentEditable='false' />);
-  const actual = renderString(<ArticleJsonToContenteditable contenteditable='false' items={[]} />);
+test('<ArticleJsonToContenteditable contentEditable=false />', (t) => {
+  const expected = renderString(<div><article contentEditable='false' /></div>);
+  const actual = renderString(<ArticleJsonToContenteditable contentEditable='false' items={[]} />);
 
   t.equal(actual, expected);
   t.end();
