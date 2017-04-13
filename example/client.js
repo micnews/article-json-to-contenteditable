@@ -121,7 +121,7 @@ class App extends Component {
       };
     }
 
-    return () => {};
+    return undefined;
   }
 
   render() {
