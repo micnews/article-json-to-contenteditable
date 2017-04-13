@@ -41,6 +41,7 @@
     "miclint": "^4.2.2",
     "pretty": "^1.0.0",
     "react-addons-test-utils": "^15.5.1",
+    "react-test-renderer": "^15.5.4",
     "semistandard-deku": "github:micnews/semistandard#deku",
     "snazzy": "^5.0.0",
     "tape": "^4.5.1",
