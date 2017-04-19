@@ -134,4 +134,4 @@ class App extends Component {
 }
 
 const container = document.querySelector('#editor');
-render(App, container);
+render(<App />, container);

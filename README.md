@@ -80,7 +80,7 @@ class App extends Component {
 }
 
 const container = document.querySelector('#editor');
-render(app, container);
+render(<App />, container);
 
 ```
 

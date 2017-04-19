@@ -5,9 +5,9 @@
   "main": "dist/index.js",
   "scripts": {
     "example": "beefy example/client.js --index example/index.html --open -- --transform babelify",
-    "lint": "miclint --flow | snazzy",
+    "lint": "miclint | snazzy",
     "test:node": "babel-tape-runner test/*-test.js",
-    "test:browser": "browserify -t babelify -t brfs -d test/*-test.js | devtool -c -h --bf --no-nt | faucet",
+    "test:browser": "browserify -t brfs -t [ babelify --presets [ es2015 react ] ] -d test/*-test.js | devtool -c -h --bf --no-nt | faucet",
     "test": "npm run test:node && npm run test:browser && npm run lint",
     "build": "babel lib --out-dir dist",
     "watch": "babel lib --out-dir dist --watch",
