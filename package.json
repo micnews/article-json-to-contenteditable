@@ -5,13 +5,15 @@
   "main": "dist/index.js",
   "scripts": {
     "example": "beefy example/client.js --index example/index.html --open -- --transform babelify",
-    "lint": "miclint | snazzy",
+    "lint": "miclint --flow | snazzy",
     "test:node": "babel-tape-runner test/*-test.js",
     "test:browser": "browserify -t brfs -t [ babelify --presets [ es2015 react ] ] -d test/*-test.js | devtool -c -h --bf --no-nt | faucet",
-    "test": "npm run test:node && npm run test:browser && npm run lint",
+    "test": "npm run flow && npm run lint && npm run test:node && npm run test:browser",
     "build": "babel lib --out-dir dist",
     "watch": "babel lib --out-dir dist --watch",
-    "prepublish": "npm run build"
+    "readme": "readme package.json --travis > README.md",
+    "prepublish": "npm run build && npm run readme",
+    "flow": "flow"
   },
   "repository": {
     "type": "git",
@@ -38,17 +40,19 @@
     "devtool": "^2.3.1",
     "enzyme": "^2.8.0",
     "faucet": "0.0.1",
+    "flow-bin": "^0.44.2",
     "miclint": "^4.2.2",
+    "package-json-to-readme": "^2.0.0",
     "pretty": "^1.0.0",
     "react-addons-test-utils": "^15.5.1",
     "react-test-renderer": "^15.5.4",
-    "semistandard-deku": "github:micnews/semistandard#deku",
     "snazzy": "^5.0.0",
     "tape": "^4.5.1",
     "tape-catch": "^1.0.5"
   },
   "dependencies": {
-    "article-json-react-render": "0.1.0",
+    "article-json-react-embeds": "^1.0.0",
+    "article-json-react-render": "^1.0.0",
     "dift": "^0.1.12",
     "embeds": "^2.5.1",
     "get-selection-range-from-elm": "^2.0.1",
@@ -58,9 +62,13 @@
     "is-image": "^1.0.1",
     "is-url": "^1.2.1",
     "keycode": "^2.1.1",
-    "object-assign": "^4.1.0",
     "react": "^15.5.3",
     "react-dom": "^15.5.3",
     "save-selection": "^2.0.0"
+  },
+  "miclint": {
+    "ignore": [
+      "flow-typed"
+    ]
   }
 }
