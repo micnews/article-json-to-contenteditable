@@ -1,7 +1,8 @@
 /* eslint-disable no-script-url, import/no-extraneous-dependencies, import/no-commonjs */
 
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { render } from 'react-dom';
+import { shallow } from 'enzyme';
 import _test from './helpers/test-runner';
 import FacebookEmbed from '../lib/embeds/facebook';
 import InstagramEmbed from '../lib/embeds/instagram';
@@ -54,7 +55,7 @@ test('FacebookEmbed - onLoaded', (t) => {
     t.equal(actualPost, expectedPost);
     t.end();
   };
-  mount(<FacebookEmbed {...opts} onLoaded={onLoaded} />, el);
+  render(<FacebookEmbed {...opts} onLoaded={onLoaded} />, el);
 });
 
 test('FacebookEmbed onResize', (t) => {
@@ -79,7 +80,7 @@ test('FacebookEmbed onResize', (t) => {
       t.end();
     }, 0);
   };
-  mount(<FacebookEmbed {...opts} onResize={onResize} />, el);
+  render(<FacebookEmbed {...opts} onResize={onResize} />, el);
 });
 
 test('InstagramEmbed - body', (t) => {
@@ -109,7 +110,7 @@ test('InstagramEmbed - onLoaded', (t) => {
     t.equal(actualPost, expectedPost);
     t.end();
   };
-  mount(<InstagramEmbed {...opts} onLoaded={onLoaded} />, el);
+  render(<InstagramEmbed {...opts} onLoaded={onLoaded} />, el);
 });
 
 test('InstagramEmbed - onResize', (t) => {
@@ -131,7 +132,7 @@ test('InstagramEmbed - onResize', (t) => {
       t.end();
     }, 0);
   };
-  mount(<InstagramEmbed {...opts} onResize={onResize} />, el);
+  render(<InstagramEmbed {...opts} onResize={onResize} />, el);
 });
 
 test('TwitterEmbed - body', (t) => {
@@ -167,7 +168,7 @@ test('TwitterEmbed - onLoaded', (t) => {
     t.equal(actualPost, expectedPost);
     t.end();
   };
-  mount(<TwitterEmbed {...opts} onLoaded={onLoaded} />, el);
+  render(<TwitterEmbed {...opts} onLoaded={onLoaded} />, el);
 });
 
 test('TwitterEmbed - onResize', (t) => {
@@ -195,7 +196,7 @@ test('TwitterEmbed - onResize', (t) => {
       t.end();
     }, 0);
   };
-  mount(<TwitterEmbed {...opts} onResize={onResize} />, el);
+  render(<TwitterEmbed {...opts} onResize={onResize} />, el);
 });
 
 test('loadEmbed()', (t) => {
@@ -250,7 +251,7 @@ test('TumblrEmbed - onLoaded', (t) => {
     t.equal(actualPost, expectedPost);
     t.end();
   };
-  mount(<TumblrEmbed {...opts} onLoaded={onLoaded} />, el);
+  render(<TumblrEmbed {...opts} onLoaded={onLoaded} />, el);
 });
 
 test('TumblrEmbed - onResize', (t) => {
@@ -267,5 +268,5 @@ test('TumblrEmbed - onResize', (t) => {
       t.end();
     }, 0);
   };
-  mount(<TumblrEmbed {...opts} onResize={onResize} />, el);
+  render(<TumblrEmbed {...opts} onResize={onResize} />, el);
 });
