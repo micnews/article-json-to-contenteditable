@@ -51,6 +51,7 @@ npm test
 - [enzyme](https://github.com/airbnb/enzyme): JavaScript Testing utilities for React
 - [faucet](https://github.com/substack/faucet): human-readable TAP summarizer
 - [flow-bin](https://github.com/flowtype/flow-bin): Binary wrapper for Flow - A static type checker for JavaScript
+- [jsdom](https://github.com/tmpvar/jsdom): A JavaScript implementation of the DOM and HTML standards
 - [miclint](https://github.com/micnews/miclint): Mic lint CLI
 - [package-json-to-readme](https://github.com/zeke/package-json-to-readme): Generate a README.md from package.json contents
 - [pretty](https://github.com/jonschlinkert/pretty): Some tweaks for beautifying HTML with js-beautify according to my preferences.
