@@ -1,6 +1,5 @@
-/* eslint-disable no-script-url, import/no-extraneous-dependencies */
+/* eslint-disable no-script-url, import/no-extraneous-dependencies, import/no-commonjs */
 
-import fs from 'fs';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import _test from './helpers/test-runner';
@@ -9,6 +8,8 @@ import InstagramEmbed from '../lib/embeds/instagram';
 import TwitterEmbed from '../lib/embeds/twitter';
 import TumblrEmbed from '../lib/embeds/tumblr';
 import loadEmbed from '../lib/embeds/load-embed';
+
+const fs = require('fs');
 
 const renderString = jsx => shallow(jsx).html();
 
