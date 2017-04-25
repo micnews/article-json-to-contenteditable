@@ -5,17 +5,16 @@ import createEvent from 'create-event';
 import parseKeyCode from 'keycode';
 import { render, unmountComponentAtNode, findDOMNode } from 'react-dom';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { Parser } from 'html-to-react';
 
 import test from './helpers/test-runner';
 import setupArticleJsonToContenteditable from '../lib/index';
 import setCaret from './helpers/set-caret';
 import setSelection from './helpers/set-selection';
+import stripReact from './helpers/strip-react';
 
 const renderString = renderToStaticMarkup;
 const mount = render;
 const unmount = component => unmountComponentAtNode(findDOMNode(component));
-const stripReact = html => renderToStaticMarkup(new Parser().parse(html));
 
 const ArticleJsonToContenteditable = setupArticleJsonToContenteditable();
 

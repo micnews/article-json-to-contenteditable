@@ -4,21 +4,11 @@ import React from 'react';
 import pretty from 'pretty';
 import { render } from 'react-dom';
 import setupArticle from 'article-json-react-render';
-import { renderToStaticMarkup } from 'react-dom/server';
-import { Parser } from 'html-to-react';
 
 import _test from './helpers/test-runner';
+import stripReact from './helpers/strip-react';
 import patchDom from '../lib/patch-dom';
 import embeds from '../lib/embeds';
-
-const stripReact = (html) => {
-  const reactComponents = new Parser().parse(html);
-  if (Array.isArray(reactComponents)) {
-    return reactComponents.map(reactComponent => renderToStaticMarkup(reactComponent)).join('');
-  }
-
-  return renderToStaticMarkup(reactComponents);
-};
 
 const test = process.browser ? _test : () => {};
 const Article = setupArticle({
