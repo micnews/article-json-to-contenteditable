@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 
-import setupArticle from './lib';
+import setupArticle from '../lib';
 
 const Article = setupArticle();
 
