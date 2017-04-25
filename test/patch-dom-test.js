@@ -2,12 +2,23 @@
 
 import React from 'react';
 import pretty from 'pretty';
-import { mount } from 'enzyme';
+import { render } from 'react-dom';
 import setupArticle from 'article-json-react-render';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { Parser } from 'html-to-react';
 
 import _test from './helpers/test-runner';
 import patchDom from '../lib/patch-dom';
 import embeds from '../lib/embeds';
+
+const stripReact = (html) => {
+  const reactComponents = new Parser().parse(html);
+  if (Array.isArray(reactComponents)) {
+    return reactComponents.map(reactComponent => renderToStaticMarkup(reactComponent)).join('');
+  }
+
+  return renderToStaticMarkup(reactComponents);
+};
 
 const test = process.browser ? _test : () => {};
 const Article = setupArticle({
@@ -17,7 +28,7 @@ const Article = setupArticle({
 
 const renderArticle = (items) => {
   const container = document.createElement('div');
-  mount(<Article items={items} />, container);
+  render(<Article items={items} />, container);
   return container.querySelector('article');
 };
 
@@ -40,7 +51,7 @@ test('patchDom() edit paragraph', (t) => {
   const newArticleElm = renderArticle(newItems);
   patchDom({ oldArticleElm, newArticleElm });
 
-  t.is(pretty(oldArticleElm.innerHTML), pretty('<p>beep boop</p>'));
+  t.is(pretty(stripReact(oldArticleElm.innerHTML)), pretty('<p>beep boop</p>'));
   t.end();
 });
 
@@ -69,7 +80,7 @@ test('patchDom() remove paragraph', (t) => {
   const newArticleElm = renderArticle(newItems);
   patchDom({ oldArticleElm, newArticleElm });
 
-  t.is(pretty(oldArticleElm.innerHTML), pretty('<p>boop</p>'));
+  t.is(pretty(stripReact(oldArticleElm.innerHTML)), pretty('<p>boop</p>'));
   t.end();
 });
 
@@ -110,7 +121,7 @@ test('patchDom() insert paragraph', (t) => {
   const newArticleElm = renderArticle(newItems);
   patchDom({ oldArticleElm, newArticleElm });
 
-  t.is(pretty(oldArticleElm.innerHTML), pretty('<p>beep</p><p>foo</p><p>boop</p>'));
+  t.is(pretty(stripReact(oldArticleElm.innerHTML)), pretty('<p>beep</p><p>foo</p><p>boop</p>'));
   t.end();
 });
 
@@ -134,7 +145,7 @@ test('patchDom() add embed', (t) => {
   const newArticleElm = renderArticle(newItems);
   patchDom({ oldArticleElm, newArticleElm });
 
-  t.is(pretty(oldArticleElm.innerHTML), pretty(
+  t.is(pretty(stripReact(oldArticleElm.innerHTML)), pretty(
     `<figure>
       <iframe id="facebook-davidbjorklundposts10153809692501070" type="facebook"
         frameborder="0" width="100%" src="javascript:false"></iframe>
@@ -178,7 +189,7 @@ test('patchDom() insert paragraph between embeds', (t) => {
   const newArticleElm = renderArticle(newItems);
   patchDom({ oldArticleElm, newArticleElm });
 
-  t.is(pretty(oldArticleElm.innerHTML), pretty(
+  t.is(pretty(stripReact(oldArticleElm.innerHTML)), pretty(
     `<figure>
       <iframe id="facebook-davidbjorklundposts10153809692501070" type="facebook"
       frameborder="0" width="100%" src="javascript:false"></iframe>
@@ -223,7 +234,7 @@ test('patchDom() insert paragraph between embeds', (t) => {
   const newArticleElm = renderArticle(newItems);
   patchDom({ oldArticleElm, newArticleElm });
 
-  t.is(pretty(oldArticleElm.innerHTML), pretty(
+  t.is(pretty(stripReact(oldArticleElm.innerHTML)), pretty(
     `<figure>
       <iframe id="facebook-davidbjorklundposts10153809692501070" type="facebook"
       frameborder="0" width="100%" src="javascript:false"></iframe>
@@ -279,7 +290,7 @@ test('patchDom() move paragraph', (t) => {
   const newArticleElm = renderArticle(newItems);
   patchDom({ oldArticleElm, newArticleElm });
 
-  t.is(pretty(oldArticleElm.innerHTML), pretty('<p>boop</p><p>beep</p><p>baap</p>'));
+  t.is(pretty(stripReact(oldArticleElm.innerHTML)), pretty('<p>boop</p><p>beep</p><p>baap</p>'));
   t.end();
 });
 
@@ -308,7 +319,7 @@ test('patchDom() move custom iframe embed', (t) => {
   const newArticleElm = renderArticle(newItems);
   patchDom({ oldArticleElm, newArticleElm });
 
-  t.is(pretty(oldArticleElm.innerHTML), pretty(
+  t.is(pretty(stripReact(oldArticleElm.innerHTML)), pretty(
     `<figure>
       <iframe id="facebook-davidbjorklundposts10153809692501070" type="facebook"
       frameborder="0" width="100%" src="javascript:false"></iframe>
@@ -348,7 +359,7 @@ test('patchDom() move embed', (t) => {
   const newArticleElm = renderArticle(newItems);
   patchDom({ oldArticleElm, newArticleElm });
 
-  t.is(pretty(oldArticleElm.innerHTML), pretty(
+  t.is(pretty(stripReact(oldArticleElm.innerHTML)), pretty(
     `<figure>
       <iframe src="https://giphy.com/embed/3oxRmeLK7bjcq0CCCA" frameborder="0"></iframe>
     </figure>
@@ -404,7 +415,7 @@ test('patchDom() formatting and move with identical paragraphs', (t) => {
   const newArticleElm = renderArticle(newItems);
   patchDom({ oldArticleElm, newArticleElm });
 
-  t.is(pretty(oldArticleElm.innerHTML), pretty('<p><b>beep</b></p><p>beep</p><p>boop</p>'));
+  t.is(pretty(stripReact(oldArticleElm.innerHTML)), pretty('<p><b>beep</b></p><p>beep</p><p>boop</p>'));
   t.end();
 });
 
@@ -428,7 +439,7 @@ test('patchDom() add embed attribution', (t) => {
   const newArticleElm = renderArticle(newItems);
   patchDom({ oldArticleElm, newArticleElm });
 
-  t.is(pretty(oldArticleElm.innerHTML), pretty(
+  t.is(pretty(stripReact(oldArticleElm.innerHTML)), pretty(
     `<figure>
       <iframe id="facebook-davidbjorklundposts10153809692501070" type="facebook"
       frameborder="0" width="100%" src="javascript:false"></iframe>
@@ -460,7 +471,7 @@ test('patchDom() remove embed attribution', (t) => {
   const newArticleElm = renderArticle(newItems);
   patchDom({ oldArticleElm, newArticleElm });
 
-  t.is(pretty(oldArticleElm.innerHTML), pretty(
+  t.is(pretty(stripReact(oldArticleElm.innerHTML)), pretty(
     `<figure>
       <iframe id="facebook-davidbjorklundposts10153809692501070" type="facebook"
       frameborder="0" width="100%" src="javascript:false"></iframe>
@@ -494,7 +505,7 @@ test('patchDom() edit embed attribution', (t) => {
   const newArticleElm = renderArticle(newItems);
   patchDom({ oldArticleElm, newArticleElm });
 
-  t.is(pretty(oldArticleElm.innerHTML), pretty(
+  t.is(pretty(stripReact(oldArticleElm.innerHTML)), pretty(
     `<figure>
       <iframe id="facebook-davidbjorklundposts10153809692501070" type="facebook"
       frameborder="0" width="100%" src="javascript:false"></iframe>
@@ -529,8 +540,8 @@ test('patchDom() update figureProps', (t) => {
   const newArticleElm = renderArticle(newItems);
   patchDom({ oldArticleElm, newArticleElm });
 
-  t.is(pretty(oldArticleElm.innerHTML), pretty(
-    `<figure class="some-other-class" data-beep="boop">
+  t.is(pretty(stripReact(oldArticleElm.innerHTML)), pretty(
+    `<figure data-beep="boop" class="some-other-class">
       <iframe id="facebook-davidbjorklundposts10153809692501070" type="facebook"
       frameborder="0" width="100%" src="javascript:false"></iframe>
     </figure>`,

@@ -3,14 +3,19 @@
 import React from 'react';
 import createEvent from 'create-event';
 import parseKeyCode from 'keycode';
-import { shallow, mount } from 'enzyme';
+import { render, unmountComponentAtNode, findDOMNode } from 'react-dom';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { Parser } from 'html-to-react';
 
 import test from './helpers/test-runner';
 import setupArticleJsonToContenteditable from '../lib/index';
 import setCaret from './helpers/set-caret';
 import setSelection from './helpers/set-selection';
 
-const renderString = jsx => shallow(jsx).html();
+const renderString = renderToStaticMarkup;
+const mount = render;
+const unmount = component => unmountComponentAtNode(findDOMNode(component));
+const stripReact = html => renderToStaticMarkup(new Parser().parse(html));
 
 const ArticleJsonToContenteditable = setupArticleJsonToContenteditable();
 
@@ -38,16 +43,10 @@ function mouseup() {
   return new window.MouseEvent('mouseup');
 }
 
-let previousApp;
+const renderingContainer = document.body.appendChild(document.createElement('div'));
 function renderAppInContainer(app) {
-  if (previousApp) {
-    previousApp.unmount();
-  }
-
-  const container = document.body.appendChild(document.createElement('div'));
-  mount(app, container);
-  previousApp = app;
-  return container;
+  mount(app, renderingContainer);
+  return renderingContainer;
 }
 
 if (process.browser) {
@@ -78,15 +77,17 @@ if (process.browser) {
     ];
 
     const expected = renderString(
-      <article contentEditable='true'>
-        <p>Text text text</p>
-        <figure contentEditable='false'>
-          <iframe id='instagram-tsxp1hhQTG' type='instagram' frameBorder='0' width='100%' src='javascript:false' />
-        </figure>
-      </article>);
+      <div data-reactroot='data-reactroot'>
+        <article contentEditable='true'>
+          <p>Text text text</p>
+          <figure contentEditable='false'>
+            <iframe id='instagram-tsxp1hhQTG' type='instagram' frameBorder='0' width='100%' src='javascript:false' />
+          </figure>
+        </article>
+      </div>);
     const app = <ArticleJsonToContenteditable items={items} />;
     const container = renderAppInContainer(app);
-    const actual = container.innerHTML;
+    const actual = stripReact(container.innerHTML);
 
     t.equal(actual, expected);
     t.end();
@@ -347,7 +348,7 @@ if (process.browser) {
     setSelection(secondParagraph, 0, secondParagraph, 1);
     container.querySelector('article').dispatchEvent(mouseup());
     t.ok(onUpdateCalled, 'onUpdate was called');
-    app.unmount();
+    unmount(app);
     t.end();
   });
 
@@ -431,7 +432,7 @@ if (process.browser) {
     setSelection(secondParagraph, 0, secondParagraph, 1);
     container.querySelector('article').dispatchEvent(new window.Event('blur'));
     t.ok(onUpdateCalled, 'onUpdate was called');
-    app.unmount();
+    unmount(app);
     t.end();
   });
 

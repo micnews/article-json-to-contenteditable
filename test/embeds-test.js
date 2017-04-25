@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { render } from 'react-dom';
-import { shallow } from 'enzyme';
+import { renderToStaticMarkup } from 'react-dom/server';
 import _test from './helpers/test-runner';
 import FacebookEmbed from '../lib/embeds/facebook';
 import InstagramEmbed from '../lib/embeds/instagram';
@@ -11,8 +11,6 @@ import TumblrEmbed from '../lib/embeds/tumblr';
 import loadEmbed from '../lib/embeds/load-embed';
 
 const fs = require('fs');
-
-const renderString = jsx => shallow(jsx).html();
 
 const fixtures = {
   facebookPost:
@@ -28,8 +26,8 @@ const fixtures = {
 const test = process.browser ? _test : () => {};
 
 test('FacebookEmbed - body', (t) => {
-  const actual = renderString(<FacebookEmbed embedAs='post' url='https://www.facebook.com/micmedia/posts/1306645779358209' />);
-  const expected = renderString(
+  const actual = renderToStaticMarkup(<FacebookEmbed embedAs='post' url='https://www.facebook.com/micmedia/posts/1306645779358209' />);
+  const expected = renderToStaticMarkup(
     <iframe id='facebook-micmediaposts1306645779358209' type='facebook' frameBorder='0' width='100%' src='javascript:false' />);
   t.equal(actual, expected);
   t.end();
@@ -84,8 +82,8 @@ test('FacebookEmbed onResize', (t) => {
 });
 
 test('InstagramEmbed - body', (t) => {
-  const actual = renderString(<InstagramEmbed id='123' />);
-  const expected = renderString(
+  const actual = renderToStaticMarkup(<InstagramEmbed id='123' />);
+  const expected = renderToStaticMarkup(
     <iframe id='instagram-123' type='instagram' frameBorder='0' width='100%' src='javascript:false' />);
   t.equal(actual, expected);
   t.end();
@@ -136,8 +134,8 @@ test('InstagramEmbed - onResize', (t) => {
 });
 
 test('TwitterEmbed - body', (t) => {
-  const actual = renderString(<TwitterEmbed id='123' />);
-  const expected = renderString(
+  const actual = renderToStaticMarkup(<TwitterEmbed id='123' />);
+  const expected = renderToStaticMarkup(
     <iframe id='twitter-123' type='twitter' frameBorder='0' width='100%' src='javascript:false' />);
   t.equal(actual, expected);
   t.end();
@@ -229,8 +227,8 @@ test('loadEmbed()', (t) => {
 });
 
 test('TumblrEmbed - body', (t) => {
-  const actual = renderString(<TumblrEmbed id='153824541111' url='https://embed.tumblr.com/embed/post/xlBeooAJ19N2jNN7Y_z92A/153824541111' />);
-  const expected = renderString(
+  const actual = renderToStaticMarkup(<TumblrEmbed id='153824541111' url='https://embed.tumblr.com/embed/post/xlBeooAJ19N2jNN7Y_z92A/153824541111' />);
+  const expected = renderToStaticMarkup(
     <iframe id='tumblr-embedpostxlBeooAJ19N2jNN7Y_z92A153824541111' type='tumblr' frameBorder='0' width='100%' src='javascript:false' />);
   t.equal(actual, expected);
   t.end();
