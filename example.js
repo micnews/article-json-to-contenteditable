@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 
-import setupArticle from '../lib';
+import setupArticle from './lib';
 
 const Article = setupArticle();
 
@@ -31,7 +31,7 @@ class App extends Component {
         date: 'Thursday, January 21, 2016',
         user: 'David Pop Hipsterson',
         text: [{
-          content: 'Hey!So, for the last few weeks I\'ve worked on http://mic.com/ - the new home for mic.com (on desktop) - please take a look :)',
+          content: 'Hey! So, for the last few weeks I\'ve worked on https://mic.com/ - the new home for mic.com - please take a look :)',
           href: null,
         }],
       }, {
