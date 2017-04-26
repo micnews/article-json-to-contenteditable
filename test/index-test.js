@@ -523,7 +523,7 @@ if (process.browser) {
     process.nextTick(() => {
       t.notOk(onUpdateCalled, 'onUpdate was not called for metaKey + v in next tick');
 
-      const event = new window.KeyboardEvent('paste');
+      const event = new window.KeyboardEvent('paste', { bubbles: true });
       container.querySelector('article').dispatchEvent(event);
 
       t.notOk(onUpdateCalled, 'onUpdate was not called for onPaste');
@@ -550,7 +550,7 @@ if (process.browser) {
     process.nextTick(() => {
       t.notOk(onUpdateCalled, 'onUpdate was not called for metaKey + x in next tick');
 
-      const event = new window.KeyboardEvent('cut');
+      const event = new window.KeyboardEvent('cut', { bubbles: true });
       container.querySelector('article').dispatchEvent(event);
 
       t.notOk(onUpdateCalled, 'onUpdate was not called for onPaste');
