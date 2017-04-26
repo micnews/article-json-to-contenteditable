@@ -39,7 +39,7 @@ function keydown(opts) {
 }
 
 function mouseup() {
-  return new window.MouseEvent('mouseup');
+  return new window.MouseEvent('mouseup', { bubbles: true });
 }
 
 const renderingContainer = document.body.appendChild(document.createElement('div'));
