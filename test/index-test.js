@@ -78,7 +78,7 @@ if (process.browser) {
     ];
 
     const expected = renderString(
-      <div data-reactroot='data-reactroot'>
+      <div data-reactroot=''>
         <article contentEditable='true'>
           <p>Text text text</p>
           <figure contentEditable='false'>
