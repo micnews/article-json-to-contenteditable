@@ -140,9 +140,16 @@ if (process.browser) {
       t.equal(selectionBoundingClientRect, null, 'selectionBoundingClientRect is null');
     }
 
-    const app = <ArticleJsonToContenteditable items={[]} onUpdate={onUpdate} />;
+    const items = [{
+      type: 'paragraph',
+      children: [{
+        type: 'text',
+        content: 'beep boop',
+      }],
+    }];
+    const app = <ArticleJsonToContenteditable items={items} onUpdate={onUpdate} />;
     const container = renderAppInContainer(app);
-    container.querySelector('article').dispatchEvent(mouseup());
+    container.querySelector('article').firstChild.dispatchEvent(mouseup());
     process.nextTick(() => {
       t.ok(onUpdateCalled, 'onUpdate was called');
       t.end();
