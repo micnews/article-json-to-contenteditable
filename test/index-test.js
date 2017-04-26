@@ -41,16 +41,16 @@ function mouseup() {
   return new window.MouseEvent('mouseup', { bubbles: true });
 }
 
-const renderingContainer = document.body.appendChild(document.createElement('div'));
-function renderAppInContainer(app) {
-  // Cleanup before rendering new app
-  unmountComponentAtNode(renderingContainer);
-
-  mount(app, renderingContainer);
-  return renderingContainer;
-}
-
 if (process.browser) {
+  const renderingContainer = document.body.appendChild(document.createElement('div'));
+  function renderAppInContainer(app) {
+    // Cleanup before rendering new app
+    unmountComponentAtNode(renderingContainer);
+
+    mount(app, renderingContainer);
+    return renderingContainer;
+  }
+
   test('<ArticleJsonToContenteditable /> items', (t) => {
     const items = [
       {
