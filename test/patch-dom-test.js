@@ -355,7 +355,7 @@ test('patchDom() move embed', (t) => {
     </figure>
     <figure>
       <iframe src="https://www.youtube.com/embed/I7IdS-PbEgI" width="640" height="360"
-        frameborder="0" allowfullscreen="true"></iframe>
+        frameborder="0" allowfullscreen=""></iframe>
     </figure>`,
   ));
   t.end();
