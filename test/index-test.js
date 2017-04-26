@@ -43,7 +43,7 @@ function mouseup() {
 
 if (process.browser) {
   const renderingContainer = document.body.appendChild(document.createElement('div'));
-  function renderAppInContainer(app) {
+  function renderAppInContainer(app) { // eslint-disable-line
     // Cleanup before rendering new app
     unmountComponentAtNode(renderingContainer);
 
