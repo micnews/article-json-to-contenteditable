@@ -3,7 +3,7 @@
 import React from 'react';
 import createEvent from 'create-event';
 import parseKeyCode from 'keycode';
-import { render, unmountComponentAtNode, findDOMNode } from 'react-dom';
+import { render, unmountComponentAtNode } from 'react-dom';
 import { renderToStaticMarkup } from 'react-dom/server';
 
 import test from './helpers/test-runner';
@@ -14,7 +14,6 @@ import stripReact from './helpers/strip-react';
 
 const renderString = renderToStaticMarkup;
 const mount = render;
-const unmount = component => unmountComponentAtNode(findDOMNode(component));
 
 const ArticleJsonToContenteditable = setupArticleJsonToContenteditable();
 
@@ -44,6 +43,9 @@ function mouseup() {
 
 const renderingContainer = document.body.appendChild(document.createElement('div'));
 function renderAppInContainer(app) {
+  // Cleanup before rendering new app
+  unmountComponentAtNode(renderingContainer);
+
   mount(app, renderingContainer);
   return renderingContainer;
 }
@@ -354,7 +356,6 @@ if (process.browser) {
     setSelection(secondParagraph, 0, secondParagraph, 1);
     container.querySelector('article').dispatchEvent(mouseup());
     t.ok(onUpdateCalled, 'onUpdate was called');
-    unmount(app);
     t.end();
   });
 
@@ -438,7 +439,6 @@ if (process.browser) {
     setSelection(secondParagraph, 0, secondParagraph, 1);
     container.querySelector('article').dispatchEvent(new window.Event('blur'));
     t.ok(onUpdateCalled, 'onUpdate was called');
-    unmount(app);
     t.end();
   });
 
