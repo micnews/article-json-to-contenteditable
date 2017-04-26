@@ -490,9 +490,9 @@ if (process.browser) {
     const expected = items;
 
     let onUpdateCalled = false;
-    function onUpdate({ updateItems }) {
+    function onUpdate({ items: updatedItems }) {
       onUpdateCalled = true;
-      t.deepEqual(updateItems, expected, 'Should not have updated selections');
+      t.deepEqual(updatedItems, expected, 'Should not have updated selections');
     }
 
     const app = (
