@@ -48,10 +48,9 @@ npm test
 - [browserify](https://github.com/substack/node-browserify): browser-side require() the node way
 - [create-event](https://github.com/kenany/create-event): Create an event object
 - [devtool](https://github.com/Jam3/devtool): runs Node.js programs through Chromium DevTools
-- [enzyme](https://github.com/airbnb/enzyme): JavaScript Testing utilities for React
 - [faucet](https://github.com/substack/faucet): human-readable TAP summarizer
 - [flow-bin](https://github.com/flowtype/flow-bin): Binary wrapper for Flow - A static type checker for JavaScript
-- [jsdom](https://github.com/tmpvar/jsdom): A JavaScript implementation of the DOM and HTML standards
+- [html-to-react](https://github.com/aknuds1/html-to-react): A lightweight library that converts raw HTML to a React DOM structure.
 - [miclint](https://github.com/micnews/miclint): Mic lint CLI
 - [package-json-to-readme](https://github.com/zeke/package-json-to-readme): Generate a README.md from package.json contents
 - [pretty](https://github.com/jonschlinkert/pretty): Some tweaks for beautifying HTML with js-beautify according to my preferences.
