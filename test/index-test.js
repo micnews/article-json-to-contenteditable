@@ -353,7 +353,7 @@ if (process.browser) {
     const container = renderAppInContainer(app);
     const secondParagraph = container.querySelectorAll('article p')[1];
 
-    setSelection(secondParagraph, 0, secondParagraph, 1);
+    setSelection(secondParagraph, 0, secondParagraph, secondParagraph.childNodes.length);
     container.querySelector('article').dispatchEvent(mouseup());
     t.ok(onUpdateCalled, 'onUpdate was called');
     t.end();
