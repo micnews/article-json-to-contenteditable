@@ -10,7 +10,7 @@ import test from './helpers/test-runner';
 import setupArticleJsonToContenteditable from '../lib/index';
 import setCaret from './helpers/set-caret';
 import setSelection from './helpers/set-selection';
-import stripReact from './helpers/strip-react';
+import stripReact from '../lib/strip-react';
 
 const renderString = renderToStaticMarkup;
 const mount = render;

@@ -6,7 +6,7 @@ import { render } from 'react-dom';
 import setupArticle from 'article-json-react-render';
 
 import _test from './helpers/test-runner';
-import stripReact from './helpers/strip-react';
+import stripReact from '../lib/strip-react';
 import patchDom from '../lib/patch-dom';
 import embeds from '../lib/embeds';
 
