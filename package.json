@@ -41,7 +41,6 @@
     "devtool": "^2.3.1",
     "faucet": "0.0.1",
     "flow-bin": "^0.44.2",
-    "html-to-react": "^1.2.7",
     "miclint": "^4.2.2",
     "package-json-to-readme": "^2.0.0",
     "pretty": "^1.0.0",
