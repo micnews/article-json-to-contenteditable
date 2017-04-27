@@ -53,6 +53,7 @@
   "dependencies": {
     "article-json-react-embeds": "^1.0.0",
     "article-json-react-render": "^1.0.0",
+    "deep-equal": "^1.0.1",
     "dift": "^0.1.12",
     "embeds": "^2.5.1",
     "get-selection-range-from-elm": "^2.0.1",
