@@ -1,70 +1,13 @@
-# article-json-to-contenteditable
+# article-json-to-contenteditable [![Build Status](https://travis-ci.org/micnews/article-json-to-contenteditable.png?branch=master)](https://travis-ci.org/micnews/article-json-to-contenteditable)
+
+
 
 ## Installation
-
-Download node at [nodejs.org](http://nodejs.org) and install it, if you haven't already.
 
 ```sh
 npm install article-json-to-contenteditable --save
 ```
-## Example
-```js
-import {render, tree} from 'deku';
-import setupArticle from '../lib';
-import element from 'magic-virtual-element';
 
-const Article = setupArticle();
-const container = document.querySelector('#editor');
-
-const items = [
-  {
-    type: 'paragraph',
-    children: [{
-      type: 'text',
-      content: 'Text text text',
-      href: null,
-      italic: false,
-      bold: false,
-      mark: false,
-      markClass: null
-    }]
-  }, {
-    type: 'embed',
-    embedType: 'facebook',
-    url: 'https://www.facebook.com/david.bjorklund/posts/10153809692501070',
-    embedAs: 'post',
-    date: 'Thursday, January 21, 2016',
-    user: 'David Pop Hipsterson',
-    text: [{
-      content: 'Hey!So, for the last few weeks I\'ve worked on http://mic.com/ - the new home for mic.com (on desktop) - please take a look :)',
-      href: null
-    }]
-  }
-];
-
-const getCustomKeyDown = (e) => {
-  // Return method(s) to handle any keydown events you want custom
-  // handling for, like undo/redo etc.
-  const zKeyCode = 90;
-  if (e.metaKey && e.keyCode === zKeyCode) {
-    return function handleUndoRedo () {
-      console.log('should undo/redo');
-    };
-  }
-};
-
-const onUpdate = ({items, selectionBoundingClientRect, activeItem}) => {
-  console.log('in client.js onUpdate');
-  console.log('selectionBoundingClientRect:', selectionBoundingClientRect);
-  console.log('activeItem:', activeItem);
-  app.mount(<Article items={items} onUpdate={onUpdate} getCustomKeyDown={getCustomKeyDown} />);
-};
-
-const app = tree(<Article items={items} onUpdate={onUpdate} getCustomKeyDown={getCustomKeyDown} />);
-
-render(app, container);
-
-```
 
 ## Tests
 
@@ -75,37 +18,49 @@ npm test
 
 ## Dependencies
 
-- [article-json-html-render](https://github.com/micnews/article-json-html-render): Base for html-based article-json renderer, such as [article-json-to-amp](https://www.npmjs.com/package/article-json-to-amp)
-- [deku](https://github.com/dekujs/deku): Create view components using a virtual DOM
+- [article-json-react-embeds](https://github.com/micnews/article-json-react-embeds): Render article-json embeds using react
+- [article-json-react-render](https://github.com/micnews/article-json-react-render): Render article json as react components
+- [dift](https://github.com/ashaffer/dift): Super fast list diff algorithm
 - [embeds](https://github.com/micnews/embeds): Parse &amp; render embeds
+- [get-selection-range-from-elm](https://github.com/micnews/get-selection-range-from-elm): window.getSelection().rangeAt(0) but only if it exists &amp; is within an element
 - [html-to-article-json](https://github.com/micnews/html-to-article-json): Converting HTML to article-json
+- [immutable-array-methods](https://github.com/micnews/immutable-array-methods): Immutable versions of normally mutable array methods, such as pop(), push(), splice()
+- [immutable-object-methods](https://github.com/micnews/immutable-object-methods): Update normal plain javascript object, immutable style. Simlar to how immutable.js, seamless-immutable etc does it but a lot smaller and simpler.
+- [is-image](https://github.com/sindresorhus/is-image): Check if a filepath is an image
+- [is-url](https://github.com/segmentio/is-url): Check whether a string is a URL.
 - [keycode](https://github.com/timoxley/keycode): Convert between keyboard keycodes and keynames and vice versa.
-- [magic-virtual-element](https://github.com/dekujs/magic-virtual-element): Build virtual tree elements with magic attributes
-- [morphdom](https://github.com/patrick-steele-idem/morphdom): Morph a DOM tree to another DOM tree (no virtual DOM needed)
+- [react](https://github.com/facebook/react): React is a JavaScript library for building user interfaces.
+- [react-dom](https://github.com/facebook/react): React package for working with the DOM.
 - [save-selection](https://github.com/micnews/save-selection): Save &amp; restore selections in a document, using `&lt;mark&gt;` elements
 
 ## Dev Dependencies
 
 - [babel-cli](https://github.com/babel/babel/tree/master/packages): Babel command line.
-- [babel-plugin-transform-react-jsx](https://github.com/babel/babel/tree/master/packages): Turn JSX into React function calls
+- [babel-plugin-transform-object-assign](https://github.com/babel/babel/tree/master/packages): Replace Object.assign with an inline helper
+- [babel-plugin-transform-object-rest-spread](https://github.com/babel/babel/tree/master/packages): Compile object rest and spread to ES5
 - [babel-preset-es2015](https://github.com/babel/babel/tree/master/packages): Babel preset for all es2015 plugins.
+- [babel-preset-react](https://github.com/babel/babel/tree/master/packages): Babel preset for all React plugins.
 - [babel-tape-runner](https://github.com/wavded/babel-tape-runner): Babel + Tape for running your ES Next tests
+- [babel-watch](https://github.com/kmagiera/babel-watch): Reload your babel-node app on JS source file changes. And do it *fast*.
 - [babelify](https://github.com/babel/babelify): Babel browserify transform
 - [beefy](https://github.com/chrisdickinson/beefy): local development server that aims to make using browserify fast and fun
 - [brfs](https://github.com/substack/brfs): browserify fs.readFileSync() static asset inliner
 - [browserify](https://github.com/substack/node-browserify): browser-side require() the node way
 - [create-event](https://github.com/kenany/create-event): Create an event object
-- [electron-prebuilt](https://github.com/electron-userland/electron-prebuilt): Install electron prebuilt binaries for the command-line use using npm
+- [devtool](https://github.com/Jam3/devtool): runs Node.js programs through Chromium DevTools
 - [faucet](https://github.com/substack/faucet): human-readable TAP summarizer
-- [semistandard-deku](https://github.com/micnews/semistandard-deku): All the goodness of `feross/standard` with semicolons sprinkled on top. Adapted for deku
+- [flow-bin](https://github.com/flowtype/flow-bin): Binary wrapper for Flow - A static type checker for JavaScript
+- [html-to-react](https://github.com/aknuds1/html-to-react): A lightweight library that converts raw HTML to a React DOM structure.
+- [miclint](https://github.com/micnews/miclint): Mic lint CLI
+- [package-json-to-readme](https://github.com/zeke/package-json-to-readme): Generate a README.md from package.json contents
+- [pretty](https://github.com/jonschlinkert/pretty): Some tweaks for beautifying HTML with js-beautify according to my preferences.
+- [react-addons-test-utils](https://github.com/facebook/react): This package provides the React TestUtils add-on.
+- [react-test-renderer](https://github.com/facebook/react): React package for snapshot testing.
 - [snazzy](https://github.com/feross/snazzy): Format JavaScript Standard Style as Stylish (i.e. snazzy) output
 - [tape](https://github.com/substack/tape): tap-producing test harness for node and browsers
 - [tape-catch](https://github.com/michaelrhodes/tape-catch): a wrapper around tape that catches and reports exceptions
-- [testron](https://github.com/shama/testron): CI your client side tests with Electron
 
 
 ## License
 
 MIT
-
-_Generated by [package-json-to-readme](https://github.com/zeke/package-json-to-readme)_

@@ -1,0 +1,10 @@
+[ignore]
+<PROJECT_ROOT>/node_modules/article-json-react-embeds/test/index-test.js
+<PROJECT_ROOT>/node_modules/article-json-react-render/test/*
+<PROJECT_ROOT>/node_modules/config-chain/test/broken.json
+
+[include]
+
+[libs]
+
+[options]

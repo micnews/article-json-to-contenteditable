@@ -1,13 +1,17 @@
+/* eslint-disable no-script-url, import/no-extraneous-dependencies, import/no-commonjs */
+
+import React from 'react';
+import { render } from 'react-dom';
+import { renderToStaticMarkup } from 'react-dom/server';
 import _test from './helpers/test-runner';
 import FacebookEmbed from '../lib/embeds/facebook';
 import InstagramEmbed from '../lib/embeds/instagram';
 import TwitterEmbed from '../lib/embeds/twitter';
 import TumblrEmbed from '../lib/embeds/tumblr';
 import loadEmbed from '../lib/embeds/load-embed';
-import {render, renderString, tree} from 'deku';
-import element from 'magic-virtual-element';
 
 const fs = require('fs');
+
 const fixtures = {
   facebookPost:
     fs.readFileSync(`${__dirname}/fixtures/facebook-post.html`, 'utf8').trim(),
@@ -16,20 +20,20 @@ const fixtures = {
   twitterPost:
     fs.readFileSync(`${__dirname}/fixtures/twitter-post.html`, 'utf8').trim(),
   tumblrPost:
-    fs.readFileSync(`${__dirname}/fixtures/tumblr-post.html`, 'utf8').trim()
+    fs.readFileSync(`${__dirname}/fixtures/tumblr-post.html`, 'utf8').trim(),
 };
 
-const test = process.browser ? _test : function () {};
+const test = process.browser ? _test : () => {};
 
-test('FacebookEmbed - body', t => {
-  const actual = renderString(tree(<FacebookEmbed embedAs='post' url='https://www.facebook.com/micmedia/posts/1306645779358209' />));
-  const expected = renderString(tree(
-    <iframe id='facebook-micmediaposts1306645779358209' type='facebook' frameBorder='0' width='100%' src='javascript:false'></iframe>));
+test('FacebookEmbed - body', (t) => {
+  const actual = renderToStaticMarkup(<FacebookEmbed embedAs='post' url='https://www.facebook.com/micmedia/posts/1306645779358209' />);
+  const expected = renderToStaticMarkup(
+    <iframe id='facebook-micmediaposts1306645779358209' type='facebook' frameBorder='0' width='100%' src='javascript:false' />);
   t.equal(actual, expected);
   t.end();
 });
 
-test('FacebookEmbed - onLoaded', t => {
+test('FacebookEmbed - onLoaded', (t) => {
   const opts = {
     url: 'https://www.facebook.com/david.bjorklund/posts/10153809692501070',
     embedAs: 'post',
@@ -37,8 +41,8 @@ test('FacebookEmbed - onLoaded', t => {
     user: 'David Pop Hipsterson',
     text: [{
       content: 'Hey!So, for the last few weeks I\'ve worked on http://mic.com/ - the new home for mic.com (on desktop) - please take a look :)',
-      href: null
-    }]
+      href: null,
+    }],
   };
   const el = document.body.appendChild(document.createElement('div'));
   const expectedPost = fixtures.facebookPost;
@@ -49,10 +53,10 @@ test('FacebookEmbed - onLoaded', t => {
     t.equal(actualPost, expectedPost);
     t.end();
   };
-  render(tree(<FacebookEmbed {...opts} onLoaded={onLoaded} />), el);
+  render(<FacebookEmbed {...opts} onLoaded={onLoaded} />, el);
 });
 
-test('FacebookEmbed onResize', t => {
+test('FacebookEmbed onResize', (t) => {
   const opts = {
     url: 'https://www.facebook.com/david.bjorklund/posts/10153809692501070',
     embedAs: 'post',
@@ -60,13 +64,13 @@ test('FacebookEmbed onResize', t => {
     user: 'David Pop Hipsterson',
     text: [{
       content: 'Hey!So, for the last few weeks I\'ve worked on http://mic.com/ - the new home for mic.com (on desktop) - please take a look :)',
-      href: null
-    }]
+      href: null,
+    }],
   };
 
   const el = document.body.appendChild(document.createElement('div'));
   const expectedHeight = 150;
-  const onResize = ({height}) => {
+  const onResize = ({ height }) => {
     // Timeout needed for the assertion to not be caught inside iframe,
     // ie - to get actual errormessages when they fail.
     setTimeout(() => {
@@ -74,25 +78,25 @@ test('FacebookEmbed onResize', t => {
       t.end();
     }, 0);
   };
-  render(tree(<FacebookEmbed {...opts} onResize={onResize} />), el);
+  render(<FacebookEmbed {...opts} onResize={onResize} />, el);
 });
 
-test('InstagramEmbed - body', t => {
-  const actual = renderString(tree(<InstagramEmbed id='123' />));
-  const expected = renderString(tree(
-    <iframe id='instagram-123' type='instagram' frameBorder='0' width='100%' src='javascript:false'></iframe>));
+test('InstagramEmbed - body', (t) => {
+  const actual = renderToStaticMarkup(<InstagramEmbed id='123' />);
+  const expected = renderToStaticMarkup(
+    <iframe id='instagram-123' type='instagram' frameBorder='0' width='100%' src='javascript:false' />);
   t.equal(actual, expected);
   t.end();
 });
 
-test('InstagramEmbed - onLoaded', t => {
+test('InstagramEmbed - onLoaded', (t) => {
   const opts = {
-    'caption': [],
-    'date': {},
-    'user': {},
-    'id': 'tsxp1hhQTG',
-    'text': '',
-    'url': 'https://instagram.com/p/tsxp1hhQTG'
+    caption: [],
+    date: {},
+    user: {},
+    id: 'tsxp1hhQTG',
+    text: '',
+    url: 'https://instagram.com/p/tsxp1hhQTG',
   };
 
   const el = document.body.appendChild(document.createElement('div'));
@@ -104,21 +108,21 @@ test('InstagramEmbed - onLoaded', t => {
     t.equal(actualPost, expectedPost);
     t.end();
   };
-  render(tree(<InstagramEmbed {...opts} onLoaded={onLoaded} />), el);
+  render(<InstagramEmbed {...opts} onLoaded={onLoaded} />, el);
 });
 
-test('InstagramEmbed - onResize', t => {
+test('InstagramEmbed - onResize', (t) => {
   const opts = {
-    'caption': [],
-    'date': {},
-    'user': {},
-    'id': 'tsxp1hhQTG',
-    'text': '',
-    'url': 'https://instagram.com/p/tsxp1hhQTG'
+    caption: [],
+    date: {},
+    user: {},
+    id: 'tsxp1hhQTG',
+    text: '',
+    url: 'https://instagram.com/p/tsxp1hhQTG',
   };
 
   const el = document.body.appendChild(document.createElement('div'));
-  const onResize = ({height}) => {
+  const onResize = ({ height }) => {
     // Timeout needed for the assertion to not be caught inside iframe,
     // ie - to get actual errormessages when they fail.
     setTimeout(() => {
@@ -126,31 +130,31 @@ test('InstagramEmbed - onResize', t => {
       t.end();
     }, 0);
   };
-  render(tree(<InstagramEmbed {...opts} onResize={onResize} />), el);
+  render(<InstagramEmbed {...opts} onResize={onResize} />, el);
 });
 
-test('TwitterEmbed - body', t => {
-  const actual = renderString(tree(<TwitterEmbed id='123' />));
-  const expected = renderString(tree(
-    <iframe id='twitter-123' type='twitter' frameBorder='0' width='100%' src='javascript:false'></iframe>));
+test('TwitterEmbed - body', (t) => {
+  const actual = renderToStaticMarkup(<TwitterEmbed id='123' />);
+  const expected = renderToStaticMarkup(
+    <iframe id='twitter-123' type='twitter' frameBorder='0' width='100%' src='javascript:false' />);
   t.equal(actual, expected);
   t.end();
 });
 
-test('TwitterEmbed - onLoaded', t => {
+test('TwitterEmbed - onLoaded', (t) => {
   const opts = {
-    'caption': [],
-    'url': 'https://twitter.com/nvidia/status/699645794903666688',
-    'date': '',
-    'user': {
-      'name': null,
-      'slug': null
+    caption: [],
+    url: 'https://twitter.com/nvidia/status/699645794903666688',
+    date: '',
+    user: {
+      name: null,
+      slug: null,
     },
-    'id': '699645794903666688',
-    'text': [{
-      'content': 'Explore the power of mobility, flexibility, and collaboration at #GTC16. Learn more: http://nvda.ly/Y65h9 pic.twitter.com/cZ34wHVJaP',
-      'href': null
-    }]
+    id: '699645794903666688',
+    text: [{
+      content: 'Explore the power of mobility, flexibility, and collaboration at #GTC16. Learn more: http://nvda.ly/Y65h9 pic.twitter.com/cZ34wHVJaP',
+      href: null,
+    }],
   };
 
   const el = document.body.appendChild(document.createElement('div'));
@@ -162,27 +166,27 @@ test('TwitterEmbed - onLoaded', t => {
     t.equal(actualPost, expectedPost);
     t.end();
   };
-  render(tree(<TwitterEmbed {...opts} onLoaded={onLoaded} />), el);
+  render(<TwitterEmbed {...opts} onLoaded={onLoaded} />, el);
 });
 
-test('TwitterEmbed - onResize', t => {
+test('TwitterEmbed - onResize', (t) => {
   const opts = {
-    'caption': [],
-    'url': 'https://twitter.com/ceejbot/status/712997641299210240',
-    'date': '',
-    'user': {
-      'name': null,
-      'slug': null
+    caption: [],
+    url: 'https://twitter.com/ceejbot/status/712997641299210240',
+    date: '',
+    user: {
+      name: null,
+      slug: null,
     },
-    'id': '712997641299210240',
-    'text': [{
-      'content': 'tl;dr life is short; don’t reinvent stuff if you don’t have to; get on with YOUR interesting problem',
-      'href': null
-    }]
+    id: '712997641299210240',
+    text: [{
+      content: 'tl;dr life is short; don’t reinvent stuff if you don’t have to; get on with YOUR interesting problem',
+      href: null,
+    }],
   };
 
   const el = document.body.appendChild(document.createElement('div'));
-  const onResize = ({height}) => {
+  const onResize = ({ height }) => {
     // Timeout needed for the assertion to not be caught inside iframe,
     // ie - to get actual errormessages when they fail.
     setTimeout(() => {
@@ -190,10 +194,10 @@ test('TwitterEmbed - onResize', t => {
       t.end();
     }, 0);
   };
-  render(tree(<TwitterEmbed {...opts} onResize={onResize} />), el);
+  render(<TwitterEmbed {...opts} onResize={onResize} />, el);
 });
 
-test('loadEmbed()', t => {
+test('loadEmbed()', (t) => {
   const iframe = document.body.appendChild(document.createElement('iframe'));
   iframe.src = 'javascript:false';
   const content = `<p>iframe content</p>
@@ -205,10 +209,10 @@ test('loadEmbed()', t => {
 
   let onLoadedCalled = false;
   let onResizeCalled = false;
-  function onLoaded () {
+  function onLoaded() {
     onLoadedCalled = true;
   }
-  function onResize ({height}) {
+  function onResize({ height }) {
     onResizeCalled = true;
     const expectedHeight = 200;
     t.equals(height, expectedHeight);
@@ -222,18 +226,18 @@ test('loadEmbed()', t => {
   t.end();
 });
 
-test('TumblrEmbed - body', t => {
-  const actual = renderString(tree(<TumblrEmbed id='153824541111' url='https://embed.tumblr.com/embed/post/xlBeooAJ19N2jNN7Y_z92A/153824541111' />));
-  const expected = renderString(tree(
-    <iframe id='tumblr-embedpostxlBeooAJ19N2jNN7Y_z92A153824541111' type='tumblr' frameBorder='0' width='100%' src='javascript:false'></iframe>));
+test('TumblrEmbed - body', (t) => {
+  const actual = renderToStaticMarkup(<TumblrEmbed id='153824541111' url='https://embed.tumblr.com/embed/post/xlBeooAJ19N2jNN7Y_z92A/153824541111' />);
+  const expected = renderToStaticMarkup(
+    <iframe id='tumblr-embedpostxlBeooAJ19N2jNN7Y_z92A153824541111' type='tumblr' frameBorder='0' width='100%' src='javascript:false' />);
   t.equal(actual, expected);
   t.end();
 });
 
-test('TumblrEmbed - onLoaded', t => {
+test('TumblrEmbed - onLoaded', (t) => {
   const opts = {
     id: '153824541111',
-    url: 'https://embed.tumblr.com/embed/post/xlBeooAJ19N2jNN7Y_z92A/153824541111'
+    url: 'https://embed.tumblr.com/embed/post/xlBeooAJ19N2jNN7Y_z92A/153824541111',
   };
 
   const el = document.body.appendChild(document.createElement('div'));
@@ -245,16 +249,16 @@ test('TumblrEmbed - onLoaded', t => {
     t.equal(actualPost, expectedPost);
     t.end();
   };
-  render(tree(<TumblrEmbed {...opts} onLoaded={onLoaded} />), el);
+  render(<TumblrEmbed {...opts} onLoaded={onLoaded} />, el);
 });
 
-test('TumblrEmbed - onResize', t => {
+test('TumblrEmbed - onResize', (t) => {
   const opts = {
     id: '153824541111',
-    url: 'https://embed.tumblr.com/embed/post/xlBeooAJ19N2jNN7Y_z92A/153824541111'
+    url: 'https://embed.tumblr.com/embed/post/xlBeooAJ19N2jNN7Y_z92A/153824541111',
   };
   const el = document.body.appendChild(document.createElement('div'));
-  const onResize = ({height}) => {
+  const onResize = ({ height }) => {
     // Timeout needed for the assertion to not be caught inside iframe,
     // ie - to get actual errormessages when they fail.
     setTimeout(() => {
@@ -262,5 +266,5 @@ test('TumblrEmbed - onResize', t => {
       t.end();
     }, 0);
   };
-  render(tree(<TumblrEmbed {...opts} onResize={onResize} />), el);
+  render(<TumblrEmbed {...opts} onResize={onResize} />, el);
 });
