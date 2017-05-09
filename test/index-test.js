@@ -337,6 +337,8 @@ if (process.browser) {
     function onUpdate ({items}) {
       onUpdateCalled = true;
       t.deepEqual(items, expected);
+      t.is(container.querySelector('mark.selection-start'), null, 'No selection tag in dom');
+      t.is(container.querySelector('mark.selection-end'), null, 'No selection tag in dom');
     }
 
     setSelection(secondParagraph, 0, secondParagraph, 1);
