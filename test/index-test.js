@@ -329,6 +329,7 @@ if (process.browser) {
         markClass: 'selection-end'
       }]
     }];
+
     const app = tree(<ArticleJsonToContenteditable items={initialItems} onUpdate={onUpdate}/>);
     const container = renderAppInContainer(app);
     const secondParagraph = container.querySelectorAll('article p')[1];
@@ -337,15 +338,24 @@ if (process.browser) {
     function onUpdate ({items}) {
       onUpdateCalled = true;
       t.deepEqual(items, expected);
-      t.is(container.querySelector('mark.selection-start'), null, 'No selection tag in dom');
-      t.is(container.querySelector('mark.selection-end'), null, 'No selection tag in dom');
     }
+
+    t.is(container.querySelector('mark.selection-start'), null, 'No selection tag in dom after render');
+    t.is(container.querySelector('mark.selection-end'), null, 'No selection tag in dom after render');
 
     setSelection(secondParagraph, 0, secondParagraph, 1);
     container.querySelector('article').dispatchEvent(mouseup());
     t.ok(onUpdateCalled, 'onUpdate was called');
-    app.unmount();
-    t.end();
+
+    app.mount(<ArticleJsonToContenteditable items={initialItems} onUpdate={onUpdate}/>);
+
+    process.nextTick(() => {
+      t.is(container.querySelector('mark.selection-start'), null, 'No selection tag in dom after update');
+      t.is(container.querySelector('mark.selection-end'), null, 'No selection tag in dom after update');
+
+      app.unmount();
+      t.end();
+    });
   });
 
   test('<ArticleJsonToContenteditable> no saved selections on blur', t => {
