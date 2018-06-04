@@ -44,6 +44,7 @@
   "dependencies": {
     "article-json-html-render": "^2.5.0",
     "deku": "^1.0.0",
+    "diff": "^3.2.0",
     "dift": "^0.1.12",
     "embeds": "^2.5.1",
     "get-selection-range-from-elm": "^2.0.1",
